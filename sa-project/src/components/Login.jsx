@@ -12,7 +12,7 @@ function Login() {
     useEffect(() => {
         if (msg) {
             const timer = setTimeout(() => setMsg(""), 5000);
-            return () => clearTimeout(timer); 
+            return () => clearTimeout(timer);
         }
     }, [msg]);
 
@@ -21,12 +21,12 @@ function Login() {
         if (type === "user") {
             setUser(e.target.value);
             if (e.target.value === "") {
-                setError("Username has left blank");
+                setError("Username has been left blank");
             }
         } else if (type === "pass") {
             setPass(e.target.value);
             if (e.target.value === "") {
-                setError("Password has left blank");
+                setError("Password has been left blank");
             }
         }
     }
@@ -53,8 +53,11 @@ function Login() {
                 console.log(response);
                 if (response[0].result === "Loggedin successfully! Redirecting...") {
                     setMsg(response[0].result);
+
+                    localStorage.setItem('username', user);
+
                     setTimeout(function(){
-                        navigate("/home" );
+                        navigate("/home");
                     }, 500);
                 } else {
                     setError(response[0].result);
@@ -70,30 +73,34 @@ function Login() {
     }
 
     return (
-        <div className='form'>
-            <h2>Login</h2>
-            <label>Username</label>
-            <input 
-                type="text" 
-                value={user}
-                onChange={(e) => handleInputChange(e, "user")}
-            />
-            <label>Password</label>
-            <input 
-                type="password" 
-                value={pass}
-                onChange={(e) => handleInputChange(e, "pass")}
-            />
-            <p className='blue'>
-                {error ? <span className='error'>{error}</span> : <span className='success'>{msg}</span>}
-            </p>
-            <button 
-                type="button"
-                className='button'
-                onClick={loginSubmit}
-            >
-                Login
-            </button>
+        <div className="home-container">
+                <div className='form'>
+                    <h2>Login</h2>
+                    <label>Username</label>
+                    <input 
+                        type="text"
+                        className='userInput'
+                        value={user}
+                        onChange={(e) => handleInputChange(e, "user")}
+                    />
+                    <label>Password</label>
+                    <input 
+                        type="password"
+                        className='passInput' 
+                        value={pass}
+                        onChange={(e) => handleInputChange(e, "pass")}
+                    />
+                    <p className='blue'>
+                        {error ? <span className='error'>{error}</span> : <span className='success'>{msg}</span>}
+                    </p>
+                    <button 
+                        type="button"
+                        className='button'
+                        onClick={loginSubmit}
+                    >
+                        Login
+                    </button>
+                </div>
         </div>
     );
 }

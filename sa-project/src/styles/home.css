@@ -6,7 +6,7 @@
 .top-bar {
     display: flex;
     background-color: #f4f4f4;
-    padding: 15px 20px;
+    padding: 25px 20px;
     border-bottom: 0.5px solid #ddd;
     position: fixed;
     top: 0;
@@ -196,8 +196,8 @@
     background-color: #fefefe;
     padding: 20px;
     border-radius: 10px;
-    width: 400px;
-    height: 470px;
+    width: 500px;
+    height: 600px;
     position: relative;
 }
 
@@ -216,6 +216,16 @@
     right: 15px;
     font-size: 24px;
     cursor: pointer;
+}
+
+.newCustomerText{
+    display: flex;
+    margin-left: 90px;
+    margin-top: 5px;
+    color: #0B3255;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
 }
 
 form {
@@ -242,4 +252,31 @@ form button {
     color: #ffffff;
     width: 200px;
 }
+.profile-info {
+    color: #0B3255;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    margin-top: 10px;
+    position: absolute;
+    left: 950px;
+}
 
+.icon {
+    width: 18px; 
+    height: 18px; 
+    margin-right: 10px;
+    margin-bottom: 3px; 
+    vertical-align: middle;
+}
+
+
+.newCustomerInput {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    width: 300px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 0.5rem;
+}

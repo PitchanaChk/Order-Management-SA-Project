@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/home.css'; 
+import homeIcon from '../image/home.png';
+import orderIcon from '../image/order.png';
+import logoutIcon from '../image/logout.png';
 
 const Home = () => {
     const [customers, setCustomers] = useState([]);
@@ -17,10 +20,14 @@ const Home = () => {
         address: ''
     });
 
-
     useEffect(() => {
         fetchCustomers();
         fetchProfile();
+
+        const storedUsername = localStorage.getItem('username');
+        if (storedUsername) {
+            setProfileName(storedUsername);
+        }
     }, []);
 
     const fetchCustomers = async () => {
@@ -43,7 +50,6 @@ const Home = () => {
         }
     };
 
-
     const handleSearch = (e) => {
         const value = e.target.value;
         setSearchId(value);
@@ -54,16 +60,17 @@ const Home = () => {
         customer.id.includes(searchId) || customer.name.toLowerCase().includes(searchName.toLowerCase())
     );
 
-    const handleToHome = async () => {
+    const handleToHome = () => {
         navigate('/home');
     };
 
-    const handleToOrder = async () => {
+    const handleToOrder = () => {
         navigate('/order');
     };
 
-    const handleLogout = async () => {
+    const handleLogout = () => {
         localStorage.removeItem('authToken');
+        localStorage.removeItem('username');
         sessionStorage.clear();
         navigate('/', { replace: true });
     };
@@ -112,10 +119,6 @@ const Home = () => {
         }
     };
     
-    
-    
-    
-
     return (
         <div className="home-container">
             <div className="top-bar">
@@ -133,9 +136,18 @@ const Home = () => {
                 </div>
             </div>
             <div className="sidebar">
-                <button className="toHome" onClick={handleToHome}>Home</button>
-                <button className="toOrder" onClick={handleToOrder}>Order</button>
-                <button className="logout-button" onClick={handleLogout}>Log Out</button>
+                <button className="toHome" onClick={handleToHome}>
+                    <img src={homeIcon} className="icon" alt="Home Icon" />
+                    Home
+                </button>
+                <button className="toOrder" onClick={handleToOrder}>
+                    <img src={orderIcon} className="icon" alt="Order Icon" />
+                    Order
+                </button>
+                <button className="logout-button" onClick={handleLogout}>
+                    <img src={logoutIcon} className="icon" alt="Logout Icon" />
+                    Log Out
+                    </button>
             </div>
             <div className="content">
                 <div className="home-page">
@@ -174,6 +186,7 @@ const Home = () => {
                     <div className="modal-content">
                         <span className="close" onClick={handleCloseModal}>&times;</span>
                         <h2 className='createNewCustomer'>Create New Customer</h2>
+                            <div className='newCustomerText'>Customer Tax ID</div>
                         <form>
                             <input 
                                 type="text"
@@ -183,6 +196,9 @@ const Home = () => {
                                 onChange={handleInputChange}
                                 className="newCustomerInput"
                             />
+                        </form>
+                            <div className='newCustomerText'>Company Name</div>
+                        <form>
                             <input 
                                 type="text"
                                 name="name"
@@ -191,6 +207,9 @@ const Home = () => {
                                 onChange={handleInputChange}
                                 className="newCustomerInput"
                             />
+                        </form>
+                            <div className='newCustomerText'>Phone</div>
+                        <form>
                             <input 
                                 type="text"
                                 name="phone"
@@ -199,6 +218,9 @@ const Home = () => {
                                 onChange={handleInputChange}
                                 className="newCustomerInput"
                             />
+                        </form>
+                            <div className='newCustomerText'>Email</div>
+                        <form>
                             <input 
                                 type="text"
                                 name="email"
@@ -207,6 +229,9 @@ const Home = () => {
                                 onChange={handleInputChange}
                                 className="newCustomerInput"
                             />
+                        </form>
+                            <div className='newCustomerText'>Address</div>
+                        <form>
                             <input 
                                 type="text"
                                 name="address"
