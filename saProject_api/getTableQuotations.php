@@ -16,7 +16,7 @@
 
     $productDetailId = $_GET['productDetailId'];
 
-    $query = "SELECT quotationId, quotationDate FROM Quotation WHERE productDetailId = '$productDetailId'";
+    $query = "SELECT quotationId, quotationDate , statusQuotation FROM Quotation WHERE productDetailId = '$productDetailId'";
     $result = mysqli_query($conn, $query);
 
     $quotations = [];

@@ -1,110 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../styles/home.css'; 
-import '../styles/productDetail.css';
+import '../styles/customerDetail.css';
 import homeIcon from '../image/home.png';
 import orderIcon from '../image/order.png';
 import logoutIcon from '../image/logout.png';
 
-const ProductDetail = () => {
-    const { productDetailId } = useParams(); 
-    const [product, setProduct] = useState(null);
-    const [status, setStatus] = useState('');
-    const [imageLink, setImageLink] = useState('');
-    const [quotations, setQuotations] = useState([]);  
+const CustomerDetail = () => {
+    const [profileName, setProfileName] = useState('');
+    const [customer, setCustomer] = useState(null);
+    const [productDetails, setProductDetails] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [quotationItems, setQuotationItems] = useState([{ orderItemId: '', quotationId:'' ,itemName: '', price: '', quantity: '' }]); 
-    const [newQuotation, setNewQuotation] = useState({
-        itemName: '',
-        price: '',
-        quantity: ''
+    const [newProductDetail, setNewProductDetail] = useState({
+        title: '',
+        description: ''
     });
-    const [nextItemId, setNextItemId] = useState(2); 
     const navigate = useNavigate(); 
+    const { id } = useParams(); 
 
     useEffect(() => {
-        fetchProductDetail();
-        fetchQuotations();  
-    }, [productDetailId]);
+        fetchProfile();
+        fetchCustomerDetail();
+    }, [id]);
 
-    const fetchProductDetail = async () => {
+    const fetchProfile = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getProductDetail.php?id=${productDetailId}`);
+            const response = await fetch('http://localhost/saProject_api/Employee.php');
             const data = await response.json();
-            setProduct(data);
-            setStatus(data.status); 
-            setImageLink(data.productPhoto);
+            setProfileName(data.name);
         } catch (error) {
-            console.error('Error fetching product detail:', error);
+            console.error('Error fetching profile:', error);
         }
     };
 
-    const fetchQuotations = async () => {
+    const fetchCustomerDetail = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getTableQuotations.php?productDetailId=${productDetailId}`);
+            const response = await fetch(`http://localhost/saProject_api/getCustomer.php?id=${id}`);
             const data = await response.json();
-            setQuotations(data);
+            setCustomer(data);
+            fetchProductDetails(data.id);
         } catch (error) {
-            console.error('Error fetching quotations:', error);
+            console.error('Error fetching customer detail:', error);
         }
     };
 
-    const handleStatusChange = async (e) => {
-        const newStatus = e.target.value;
-        setStatus(newStatus);
-
+    const fetchProductDetails = async (customerTaxId) => {
         try {
-            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    productDetailId: productDetailId,
-                    status: newStatus,
-                }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to update status');
-            }
-            console.log('Status updated successfully');
+            const response = await fetch(`http://localhost/saProject_api/getTableProductDetails.php?customerTaxId=${id}`);
+            const data = await response.json();
+            setProductDetails(data);
         } catch (error) {
-            console.error('Error updating status:', error);
-        }
-    };
-
-    const handleImageLinkChange = (e) => {
-        setImageLink(e.target.value);
-    };
-
-    const handleUploadImageLink = async () => {
-        if (!imageLink) {
-            alert('Please enter an image link.');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://localhost/saProject_api/uploadProductImage.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    productDetailId: productDetailId,
-                    productPhoto: imageLink,
-                }),
-            });
-
-            const responseData = await response.json();
-            if (!response.ok) {
-                throw new Error(responseData.error || 'Failed to update image link');
-            }
-
-            console.log('Image link updated successfully');
-            fetchProductDetail(); 
-        } catch (error) {
-            console.error('Error updating image link:', error);
+            console.error('Error fetching product details:', error);
         }
     };
 
@@ -128,92 +74,64 @@ const ProductDetail = () => {
     
     const handleCloseModal = () => {
         setShowModal(false);
-        setQuotationItems([{ orderItemId: 1,  quotationId:'' ,itemName: '', price: '', quantity: '' }]);
-        setNextItemId(2); 
     };
 
-    const handleQuotationItemChange = (index, field, value) => {
-        const newItems = [...quotationItems];
-        newItems[index][field] = value;
-        setQuotationItems(newItems);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewProductDetail(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
-    const handleAddQuotationItem = () => {
-        const newItem = {
-            orderItemId: Date.now(), 
-            itemName: '',
-            price: '',
-            quantity: ''
-        };
-        setQuotationItems([...quotationItems, newItem]);
-    };
-
-    const handleRemoveQuotationItem = (index) => {
-        const newItems = quotationItems.filter((_, i) => i !== index);
-        setQuotationItems(newItems);
-    };
+    const handleCreateProductDetail = async () => {
+        const { title, description } = newProductDetail;
     
-    const handleSubmitQuotation = async () => {
-        const quotationDate = new Date().toISOString().split('T')[0]; 
-    
-        for (let item of quotationItems) {
-            if (!item.itemName || !item.price || !item.quantity) {
-                alert('Please fill in all fields for all quotation items.');
-                return;
-            }
+        if (!title || !description) {
+            alert('Please fill in all fields before submitting');
+            return;
         }
     
         try {
-            const modifiedproductDetailId = productDetailId.slice(1);
-            const existingQuotationsCount = quotations.length;
-            const quotationId = `Q${modifiedproductDetailId}0${existingQuotationsCount + 1}`;
-    
-            const modifiedQuotationId = quotationId.slice(3);
-            const updatedQuotationItems = quotationItems.map((item, index) => ({
-                ...item,
-                orderItemId: `OI${modifiedQuotationId}0${index + 1}`, 
-            }));
-    
-            const response = await fetch('http://localhost/saProject_api/createQuotation.php', {
+            const response = await fetch('http://localhost/saProject_api/createProductDetail.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({
-                    productDetailId: productDetailId,
-                    quotationId: quotationId,
-                    quotationDate: quotationDate,
-                    quotationItems: updatedQuotationItems.map(item => ({
-                        orderItemId: item.orderItemId,
-                        itemName: item.itemName,
-                        pricePerUnit: parseFloat(item.price),
-                        quantity: parseInt(item.quantity, 10),
-                    })),
-                    quotationId: quotationId,  
+                    customerTaxId: customer.id,
+                    title,
+                    description,
+                    status: 'Ready to Design',
+                    productPhoto: ''  
                 }),
             });
     
-            const responseData = await response.json();
-    
             if (response.ok) {
-                alert('Quotation created successfully!');
+                alert('Product detail created successfully!');
+                fetchProductDetails(customer.customerTaxId); 
                 setShowModal(false);
-                setQuotationItems([{ orderItemId: '', quotationId: '', itemName: '', price: '', quantity: '' }]);
-                fetchQuotations(); 
             } else {
-                alert(`Failed to create quotation: ${responseData.error || 'Unknown error'}`);
+                const errorData = await response.json();
+                console.error('Failed to create product detail:', errorData);
+                alert(`Failed to create product detail: ${errorData.error}`);
             }
         } catch (error) {
-            alert('An error occurred while creating the quotation. Please try again later.');
+            console.error('Error creating product detail:', error);
         }
     };
     
     
 
-    
-    if (product === null) return <div>Loading product details...</div>;
+    if (customer === null) return <div>No customer found or loading error.</div>;
 
     return (
         <div className="home-container">
-            <div className="top-bar-no-search"></div>
+            <div className="top-bar-no-search">
+                <div className="profile-info">
+                    <span>{profileName}</span>
+                </div>
+            </div>
             <div className="sidebar">
                 <button className="toHome" onClick={handleToHome}>
                     <img src={homeIcon} className="icon" alt="Home Icon" />
@@ -228,128 +146,72 @@ const ProductDetail = () => {
                     Log Out
                 </button>
             </div>
-            <div className="content-pd">
-                <h2 className='productDetail'>Product Detail</h2>
-                <div className='detail-pd'>
+            <div className="content-cd">
+                <h2 className='customerDetails'>Customer Details</h2>
+                <div className='detail'>
                     <div className='c1'>
-                        <p className='c1-1'>Product ID : <span>{product.productDetailId}</span></p>
-                        <p className='c1-1'>Title : <span>{product.title}</span></p>
-                        <p className='c1-1'>Description :</p>
-                        <p className='c1-2'>{product.description}</p>
+                        <p className='c1-1'>Company Tax ID : <span>{customer.id}</span></p>
+                        <p className='c1-1'>Company Name : <span>{customer.name}</span></p>
+                        <p className='c1-2'>Address : <span>{customer.address}</span></p>
                     </div>
                     <div className='c2'>
-                        <p>Status : 
-                            <select className='statusPdDropdown' value={status} onChange={handleStatusChange}>
-                                <option value="Ready to Design">Ready to Design</option>
-                                <option value="Designing">Designing</option>
-                                <option value="Completed">Completed</option>
-                                <option value="Editing">Editing</option>
-                                <option value="Cancelled">Cancelled</option>
-                            </select>
-                        </p>
-                        <p>Design Product Photo : </p>
-                        <p className='link'> 
-                            {product.productPhoto ? (
-                                <a href={product.productPhoto} target="_blank" rel="noopener noreferrer">{product.productPhoto}</a>
-                            ) : (
-                                'No photo available'
-                            )}
-                        </p>
-                        <input
-                            className='linkPhotoInput'
-                            type="text"
-                            value={imageLink}
-                            onChange={handleImageLinkChange}
-                            placeholder="Enter image link"
-                        />
-                        <button className='uploadButton' onClick={handleUploadImageLink}>Upload</button>
+                        <p>Phone : <span>{customer.phone}</span></p>
+                        <p>Email : <span>{customer.email}</span></p>
                     </div>
                 </div>
-                <h2 className='quotation'>Quotations</h2>
-                <div className="quotation-table">
+                <h2 className='productDetails'>Product Details</h2>
+                <div className='product-table'>
                     <table>
                         <thead>
                             <tr>
-                                <th>Quotation ID</th>
-                                <th>Quotation Date</th>
+                                <th>Product ID</th>
+                                <th>Title</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {quotations.length > 0 ?(
-                            quotations.map((quotation) => (
-                                <tr key={quotation.quotationId}>
-                                    <td>{quotation.quotationId}</td>
-                                    <td>{quotation.quotationDate}</td>
-                                </tr>
-                            ))
+                            {productDetails.length > 0 ? (
+                                productDetails.map(product => (
+                                    <tr key={product.productDetailId} onClick={() => navigate(`/ProductDetail/${product.productDetailId}`)} style={{ cursor: 'pointer' }}>
+                                        <td>{product.productDetailId}</td>
+                                        <td>{product.title}</td>
+                                        <td>{product.status}</td>
+                                    </tr>
+                                ))
                             ) : (
                                 <tr>
-                                    <td colSpan="2">No Quotations found.</td>
+                                    <td colSpan="3">No product details found.</td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
-                <button className="create-quotation-button" onClick={handleShowModal}>Create New Quotation</button>
+                <button className="create-button" onClick={handleShowModal}>Create New Product Detail</button>
             </div>
             {showModal && (
-                <div className="modal-Q">
-                    <div className="modal-content-Q">
+                <div className="modal-PD">
+                    <div className="modal-content-PD">
                         <span className="close" onClick={handleCloseModal}>&times;</span>
-                        <h2 className='createNewQuotation' >Create New Quotation</h2>
-                        <h3 className='orderItem' >Order item</h3>
-                        <div className="quotation-item">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Item Name</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {quotationItems.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Name Item"
-                                                    value={item.itemName}
-                                                    onChange={(e) => handleQuotationItemChange(index, 'itemName', e.target.value)}
-                                                    required
-                                                />
-                                            </td>
-                                            <td>
-                                                <input
-                                                    type="number"
-                                                    placeholder="Price"
-                                                    value={item.price}
-                                                    onChange={(e) => handleQuotationItemChange(index, 'price', e.target.value)}
-                                                    required
-                                                />
-                                            </td>
-                                            <td>
-                                                <input
-                                                    type="number"
-                                                    placeholder="Quantity"
-                                                    value={item.quantity}
-                                                    onChange={(e) => handleQuotationItemChange(index, 'quantity', e.target.value)}
-                                                    required
-                                                />
-                                            </td>
-                                            <td>
-                                                <button onClick={() => handleRemoveQuotationItem(index)}>X</button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <button className='add-item' onClick={handleAddQuotationItem}>Add Item</button>
-                        <div className="button-container">
-                            <button className='submit-Q' onClick={handleSubmitQuotation}>Submit Quotation</button>
-                        </div>
+                        <h2 className='createNewProductDetail'>Create New Product Detail</h2>
+                        <form>
+                            <input 
+                                type="text"
+                                name="title"
+                                placeholder="Title"
+                                value={newProductDetail.title}
+                                onChange={handleInputChange}
+                                className="newProductDetail"
+                            />
+                            <input 
+                                type="text"
+                                name="description"
+                                placeholder="Description"
+                                value={newProductDetail.description}
+                                onChange={handleInputChange}
+                                className="newProductDetail"
+                            />
+                            <button type="button" onClick={handleCreateProductDetail}>Submit</button>
+                        </form>
                     </div>
                 </div>
             )}
@@ -357,4 +219,4 @@ const ProductDetail = () => {
     );
 };
 
-export default ProductDetail;
+export default CustomerDetail;
