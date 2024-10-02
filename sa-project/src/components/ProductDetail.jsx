@@ -16,7 +16,7 @@ const ProductDetail = () => {
     const [quotationItems, setQuotationItems] = useState([{ orderItemId: '', quotationId:'' ,itemName: '', price: '', quantity: '' }]); 
     const [newQuotation, setNewQuotation] = useState({
         itemName: '',
-        pricePerUnit: '',
+        price: '',
         quantity: ''
     });
     const [nextItemId, setNextItemId] = useState(2); 
@@ -147,6 +147,11 @@ const ProductDetail = () => {
         };
         setQuotationItems([...quotationItems, newItem]);
     };
+
+    const handleRemoveQuotationItem = (index) => {
+        const newItems = quotationItems.filter((_, i) => i !== index);
+        setQuotationItems(newItems);
+    };
     
     const handleSubmitQuotation = async () => {
         const quotationDate = new Date().toISOString().split('T')[0]; 
@@ -159,18 +164,30 @@ const ProductDetail = () => {
         }
     
         try {
+            const modifiedproductDetailId = productDetailId.slice(1);
+            const existingQuotationsCount = quotations.length;
+            const quotationId = `Q${modifiedproductDetailId}0${existingQuotationsCount + 1}`;
+    
+            const modifiedQuotationId = quotationId.slice(3);
+            const updatedQuotationItems = quotationItems.map((item, index) => ({
+                ...item,
+                orderItemId: `OI${modifiedQuotationId}0${index + 1}`, 
+            }));
+    
             const response = await fetch('http://localhost/saProject_api/createQuotation.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     productDetailId: productDetailId,
+                    quotationId: quotationId,
                     quotationDate: quotationDate,
-                    quotationItems: quotationItems.map(item => ({
-                        orderItemId: item.orderItemId,  
+                    quotationItems: updatedQuotationItems.map(item => ({
+                        orderItemId: item.orderItemId,
                         itemName: item.itemName,
-                        pricePerUnit: parseFloat(item.price),  
-                        quantity: parseInt(item.quantity, 10)  
+                        pricePerUnit: parseFloat(item.price),
+                        quantity: parseInt(item.quantity, 10),
                     })),
+                    quotationId: quotationId,  
                 }),
             });
     
@@ -179,8 +196,8 @@ const ProductDetail = () => {
             if (response.ok) {
                 alert('Quotation created successfully!');
                 setShowModal(false);
-                setQuotationItems([{ orderItemId: Date.now(), quotationId: '', itemName: '', price: '', quantity: '' }]); // Reset form
-                fetchQuotations(); // Refresh the list of quotations
+                setQuotationItems([{ orderItemId: '', quotationId: '', itemName: '', price: '', quantity: '' }]);
+                fetchQuotations(); 
             } else {
                 alert(`Failed to create quotation: ${responseData.error || 'Unknown error'}`);
             }
@@ -188,6 +205,7 @@ const ProductDetail = () => {
             alert('An error occurred while creating the quotation. Please try again later.');
         }
     };
+    
     
 
     
@@ -280,29 +298,53 @@ const ProductDetail = () => {
                         <span className="close" onClick={handleCloseModal}>&times;</span>
                         <h2 className='createNewQuotation' >Create New Quotation</h2>
                         <h3 className='orderItem' >Order item</h3>
-                        <div className="quotation-items-container">
-                            {quotationItems.map((item, index) => (
-                                <div key={item.id} className="quotation-item"> 
-                                    <input
-                                        type="text"
-                                        placeholder="Name Item"
-                                        value={item.itemName}
-                                        onChange={(e) => handleQuotationItemChange(index, 'itemName', e.target.value)}
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="Price"
-                                        value={item.price}
-                                        onChange={(e) => handleQuotationItemChange(index, 'price', e.target.value)}
-                                    />
-                                    <input
-                                        type="number"
-                                        placeholder="Quantity"
-                                        value={item.quantity}
-                                        onChange={(e) => handleQuotationItemChange(index, 'quantity', e.target.value)}
-                                    />
-                                </div>
-                            ))}
+                        <div className="quotation-item">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {quotationItems.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Name Item"
+                                                    value={item.itemName}
+                                                    onChange={(e) => handleQuotationItemChange(index, 'itemName', e.target.value)}
+                                                    required
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    placeholder="Price"
+                                                    value={item.price}
+                                                    onChange={(e) => handleQuotationItemChange(index, 'price', e.target.value)}
+                                                    required
+                                                />
+                                            </td>
+                                            <td>
+                                                <input
+                                                    type="number"
+                                                    placeholder="Quantity"
+                                                    value={item.quantity}
+                                                    onChange={(e) => handleQuotationItemChange(index, 'quantity', e.target.value)}
+                                                    required
+                                                />
+                                            </td>
+                                            <td>
+                                                <button onClick={() => handleRemoveQuotationItem(index)}>X</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                         <button className='add-item' onClick={handleAddQuotationItem}>Add Item</button>
                         <div className="button-container">
