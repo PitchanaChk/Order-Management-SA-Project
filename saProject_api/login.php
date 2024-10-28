@@ -20,10 +20,11 @@
 
     $user = $dData['username'];
     $pass = $dData['password'];
+    $role = $dData['role'];
     $result = "";
 
     if (!empty($user) && !empty($pass)) {
-        $sql = $conn->prepare("SELECT * FROM Employee WHERE username = ? AND password = ?");
+        $sql = $conn->prepare("SELECT * FROM Employees WHERE username = ? AND password = ?");
         $sql->bind_param("ss", $user, $pass);
         $sql->execute();
         $res = $sql->get_result();
@@ -33,6 +34,7 @@
             if ($pass !== $row['password']) {
                 $result = "Invalid password";
             } else {
+                $role = $row['role'];
                 $result = "Loggedin successfully! Redirecting...";
             }
         } else {
@@ -43,6 +45,6 @@
     }
 
     $conn->close();
-    $response[] = array("result" => $result);
+    $response[] = array("result" => $result, "role" => isset($role) ? $role : null);
     echo json_encode($response);
 ?>
