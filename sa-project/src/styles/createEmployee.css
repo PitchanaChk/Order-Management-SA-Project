@@ -41,7 +41,6 @@
   
 .sidebar {
     width: 250px;
-    background-image: url('../image/side.png');
     background-color: #1C1E2B;
     height: 100vh;
     position: fixed;
@@ -80,7 +79,7 @@
     padding-left: 100px;
 }
 
-.labelCustomer {
+.labelEmployee {
     color: #0B3255;
     font-size: 35px;
     font-style: normal;
@@ -88,7 +87,7 @@
     line-height: 200%;
 }
 
-.customers-table {
+.employees-table {
     margin-top: 35px;
     width: 900px;
     flex-shrink: 0;
@@ -97,14 +96,14 @@
     max-height: 430px;
 }
 
-.customers-table table {
+.employees-table table {
     width: 100%;
     border-collapse: collapse; 
     border-spacing: 0;
     background-color: #ffffff;   
 }
 
-.customers-table th {
+.employees-table th {
     position: sticky; 
     top: 0; 
     background-color: #224C73; 
@@ -112,26 +111,34 @@
     color: #ffffff;
 }
 
-.customers-table th, .customers-table td {
+.employees-table th, .employees-table td {
     padding: 10px;
     border: 1.5px solid #ccc;
     text-align: left;
     width: auto; 
 }
 
-.customers-table th:nth-child(1), 
-.customers-table td:nth-child(1) {
+.employees-table th:nth-child(1), 
+.employees-table td:nth-child(1) {
+    width: 60px; 
+}
+
+.employees-table th:nth-child(2), 
+.employees-table td:nth-child(2) {
     width: 100px; 
 }
 
-.customers-table th:nth-child(2), 
-.customers-table td:nth-child(2) {
-    width: 200px; 
-}
-
-.customers-table th:nth-child(3), 
-.customers-table td:nth-child(3) {
+.employees-table th:nth-child(3), 
+.employees-table td:nth-child(3) {
     width: 50px; 
+} 
+.employees-table th:nth-child(4), 
+.employees-table td:nth-child(4) {
+    width: 150px; 
+} 
+.employees-table th:nth-child(5), 
+.employees-table td:nth-child(5) {
+    width: 40px; 
 } 
 
 
@@ -143,7 +150,7 @@
     border-radius: 10px;
     cursor: pointer;
     margin-top: 20px;
-    width: 300px;
+    width: 250px;
     font-weight: 600;
     font-size: 18px;
     height: 50px;
@@ -153,9 +160,9 @@
     background-color: #0056b3;
 }
 
-.logout-button {
+.logout-button-admin {
     border-radius: 5px;
-    margin-top: 300px;
+    margin-top: 530px;
     color: #ffffff;
     background-color: #007bff00;
     width: 250px;
@@ -167,16 +174,15 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.logout-button:hover {
+.logout-button-admin:hover {
     background-color: #224C73;
 }
 
-.toHome-1 {
+.toHome {
     border-radius: 5px;
     margin-top: 130px;
     color: #ffffff;
-    background-color: #ffffff43;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
+    background-color: #224C73;
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -186,9 +192,11 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
+.toHome:hover {
+    background-color: #0056b3;
+}
 
-
-.toOrder-1 {
+.toOrder {
     border-radius: 5px;
     margin-top: 30px;
     color: #ffffff;
@@ -202,8 +210,8 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toOrder-1:hover {
-    background-color: #ffffff43;
+.toOrder:hover {
+    background-color: #224C73;
 }
 
 .toDelivery {
@@ -242,7 +250,7 @@
     background-color: #224C73;
 }
 
-.modal {
+.modal-create-employee {
     display: flex;
     position: fixed;
     z-index: 1;
@@ -255,16 +263,16 @@
     align-items: center;
 }
 
-.modal-content {
+.modal-content-create-employee {
     background-color: #fefefe;
     padding: 20px;
     border-radius: 10px;
     width: 500px;
-    height: 600px;
+    height: 700px;
     position: relative;
 }
 
-.createNewCustomer {
+.createNewEmployee {
     margin-top: 30px;
     display: flex;
     flex-direction: column;
@@ -281,7 +289,7 @@
     cursor: pointer;
 }
 
-.newCustomerText{
+.newEmployeeText{
     display: flex;
     margin-left: 90px;
     margin-top: 5px;
@@ -334,7 +342,7 @@ form button {
 }
 
 
-.newCustomerInput {
+.newEmployeeInput {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
     font-size: 1rem;

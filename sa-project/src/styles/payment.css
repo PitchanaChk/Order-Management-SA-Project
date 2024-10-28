@@ -1,74 +1,3 @@
-.home-container {
-    display: flex;
-    background-color: #ECE8E7;
-  }
-  
-.top-bar {
-    display: flex;
-    background-color: #f4f4f4;
-    padding: 25px 20px;
-    border-bottom: 0.5px solid #ddd;
-    position: fixed;
-    top: 0;
-    left: 290px; 
-    right: 0;
-}
-.search-bar {
-    display: flex;
-    flex: 0.5; 
-    margin-left: 30px; 
-  }
-  
-.search-bar input {
-    width: 80%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-}
-  
-.search-button {
-    background-color: #007bff00;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-  
-.profile-info {
-    font-size: 18px;
-}
-  
-.sidebar {
-    width: 250px;
-    background-image: url('../image/side.png');
-    background-color: #1C1E2B;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 20px;
-}
-  
-.sidebar nav ul {
-    list-style: none;
-    padding: 0;
-}
-  
-.sidebar nav ul li {
-    margin: 10px 0;
-}
-  
-.sidebar nav ul li a {
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 18px;
-}
-  
-.sidebar nav ul li a:hover {
-    text-decoration: underline;
-}
-
 .content {
     width: 100%; 
     height: 100%;
@@ -80,7 +9,7 @@
     padding-left: 100px;
 }
 
-.labelCustomer {
+.labelPayment {
     color: #0B3255;
     font-size: 35px;
     font-style: normal;
@@ -88,23 +17,23 @@
     line-height: 200%;
 }
 
-.customers-table {
+.payment-table {
     margin-top: 35px;
     width: 900px;
     flex-shrink: 0;
     overflow-y: auto; 
     padding-bottom: 15px;
-    max-height: 430px;
+    max-height: 480px;
 }
 
-.customers-table table {
+.payment-table table {
     width: 100%;
     border-collapse: collapse; 
     border-spacing: 0;
     background-color: #ffffff;   
 }
 
-.customers-table th {
+.payment-table th {
     position: sticky; 
     top: 0; 
     background-color: #224C73; 
@@ -112,44 +41,83 @@
     color: #ffffff;
 }
 
-.customers-table th, .customers-table td {
+.payment-table th, .payment-table td {
     padding: 10px;
     border: 1.5px solid #ccc;
     text-align: left;
     width: auto; 
 }
 
-.customers-table th:nth-child(1), 
-.customers-table td:nth-child(1) {
-    width: 100px; 
-}
-
-.customers-table th:nth-child(2), 
-.customers-table td:nth-child(2) {
-    width: 200px; 
-}
-
-.customers-table th:nth-child(3), 
-.customers-table td:nth-child(3) {
+.payment-table th:nth-child(1), 
+.payment-table td:nth-child(1) {
     width: 50px; 
+}
+
+.payment-table th:nth-child(2), 
+.payment-table td:nth-child(2) {
+    width: 50px; 
+}
+
+.payment-table th:nth-child(3), 
+.payment-table td:nth-child(3) {
+    width: 80px; 
+} 
+.payment-table th:nth-child(4), 
+.payment-table td:nth-child(4) {
+    width: 200px; 
 } 
 
+.payment-table th:nth-child(5), 
+.payment-table td:nth-child(5) {
+    width: 250px; 
+} 
 
-.create-button {
+.statusDeliveryDropdown{
+    margin-left: 10px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: #ffffff;
+    color: #224C73;
+    width: 200px;
+}
+
+
+
+.show-delivery-button {
     padding: 10px 20px;
-    background-color: #224C73;
+    background-color: #8aa7c1;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 120px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.show-delivery-button:hover {
+    background-color: #0056b3;
+}
+
+.download-delivery-button {
+    padding: 10px 20px;
+    background-color: #8aa7c1;
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    margin-top: 20px;
-    width: 300px;
-    font-weight: 600;
-    font-size: 18px;
-    height: 50px;
+    width: 150px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 40px;
 }
 
-.create-button:hover {
+.download-delivery-button:hover {
     background-color: #0056b3;
 }
 
@@ -171,12 +139,11 @@
     background-color: #224C73;
 }
 
-.toHome-1 {
+.toHome-delivery {
     border-radius: 5px;
     margin-top: 130px;
     color: #ffffff;
-    background-color: #ffffff43;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
+    background-color: #007bff00;
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -186,9 +153,11 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
+.toHome:hover {
+    background-color: #0056b3;
+}
 
-
-.toOrder-1 {
+.toOrder {
     border-radius: 5px;
     margin-top: 30px;
     color: #ffffff;
@@ -202,15 +171,15 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toOrder-1:hover {
-    background-color: #ffffff43;
+.toOrder:hover {
+    background-color: #224C73;
 }
 
-.toDelivery {
+.toDelivery-delivery {
     border-radius: 5px;
     margin-top: 30px;
     color: #ffffff;
-    background-color: #007bff00;
+    background-color: #224C73;
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -224,11 +193,12 @@
     background-color: #224C73;
 }
 
-.toPayment {
+.toPayment-p {
     border-radius: 5px;
     margin-top: 30px;
     color: #ffffff;
-    background-color: #007bff00;
+    background-color: #ffffff43;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -238,9 +208,7 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toPayment:hover {
-    background-color: #224C73;
-}
+
 
 .modal {
     display: flex;

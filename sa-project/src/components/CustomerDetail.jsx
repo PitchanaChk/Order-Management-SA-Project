@@ -5,6 +5,8 @@ import '../styles/customerDetail.css';
 import homeIcon from '../image/home.png';
 import orderIcon from '../image/order.png';
 import logoutIcon from '../image/logout.png';
+import deliveryIcon from '../image/delivery.png';
+import paymentIcon from '../image/payment.png';
 
 const CustomerDetail = () => {
     const [profileName, setProfileName] = useState('');
@@ -25,9 +27,21 @@ const CustomerDetail = () => {
 
     const fetchProfile = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/Employee.php');
+            const username = localStorage.getItem('username'); 
+            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
             const data = await response.json();
-            setProfileName(data.name);
+    
+            setProfileName(data[0].result.name); 
         } catch (error) {
             console.error('Error fetching profile:', error);
         }
@@ -68,6 +82,14 @@ const CustomerDetail = () => {
         navigate('/', { replace: true });
     };
 
+    const handleToDelivery = () => {
+        navigate('/delivery');
+    };
+
+    const handleToPayment = () => {
+        navigate('/payment');
+    };
+
     const handleShowModal = () => {
         setShowModal(true);
     };
@@ -102,7 +124,7 @@ const CustomerDetail = () => {
                     customerTaxId: customer.id,
                     title,
                     description,
-                    status: 'Ready to Design',
+                    status: 'Waiting for Design',
                     productPhoto: ''  
                 }),
             });
@@ -141,6 +163,14 @@ const CustomerDetail = () => {
                     <img src={orderIcon} className="icon" alt="Order Icon" />
                     Order
                 </button>
+                <button className="toDelivery" onClick={handleToDelivery}>
+                    <img src={deliveryIcon} className="icon" alt="Delivery Icon" />
+                    Delivery
+                </button>
+                <button className="toPayment" onClick={handleToPayment}>
+                    <img src={paymentIcon} className="icon" alt="Payment Icon" />
+                    Payment
+                </button>
                 <button className="logout-button" onClick={handleLogout}>
                     <img src={logoutIcon} className="icon" alt="Logout Icon" />
                     Log Out
@@ -172,7 +202,7 @@ const CustomerDetail = () => {
                         <tbody>
                             {productDetails.length > 0 ? (
                                 productDetails.map(product => (
-                                    <tr key={product.productDetailId} onClick={() => navigate(`/ProductDetail/${product.productDetailId}`)} style={{ cursor: 'pointer' }}>
+                                    <tr key={product.productDetailId} onClick={() => navigate(`/productDetail/${product.productDetailId}`)} style={{ cursor: 'pointer' }}>
                                         <td>{product.productDetailId}</td>
                                         <td>{product.title}</td>
                                         <td>{product.status}</td>
@@ -186,7 +216,7 @@ const CustomerDetail = () => {
                         </tbody>
                     </table>
                 </div>
-                <button className="create-button" onClick={handleShowModal}>Create New Product Detail</button>
+                <button className="create-button-Product" onClick={handleShowModal}>Create New Product Detail</button>
             </div>
             {showModal && (
                 <div className="modal-PD">

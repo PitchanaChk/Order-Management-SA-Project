@@ -4,6 +4,8 @@ import '../styles/home.css';
 import homeIcon from '../image/home.png';
 import orderIcon from '../image/order.png';
 import logoutIcon from '../image/logout.png';
+import deliveryIcon from '../image/delivery.png';
+import paymentIcon from '../image/payment.png';
 
 const Home = () => {
     const [customers, setCustomers] = useState([]);
@@ -42,13 +44,26 @@ const Home = () => {
 
     const fetchProfile = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/Employee.php');
+            const username = localStorage.getItem('username'); 
+            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
             const data = await response.json();
-            setProfileName(data.name);
+    
+            setProfileName(data[0].result.name); 
         } catch (error) {
             console.error('Error fetching profile:', error);
         }
     };
+    
 
     const handleSearch = (e) => {
         const value = e.target.value;
@@ -68,6 +83,14 @@ const Home = () => {
         navigate('/order');
     };
 
+    const handleToDelivery = () => {
+        navigate('/delivery');
+    };
+
+    const handleToPayment = () => {
+        navigate('/payment');
+    };
+
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('username');
@@ -85,6 +108,10 @@ const Home = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+
+        if (name === 'phone' && value.length > 10) {
+            return; 
+        }
         setNewCustomer(prevState => ({
             ...prevState,
             [name]: value
@@ -136,13 +163,21 @@ const Home = () => {
                 </div>
             </div>
             <div className="sidebar">
-                <button className="toHome" onClick={handleToHome}>
+                <button className="toHome-1" onClick={handleToHome}>
                     <img src={homeIcon} className="icon" alt="Home Icon" />
                     Home
                 </button>
-                <button className="toOrder" onClick={handleToOrder}>
+                <button className="toOrder-1" onClick={handleToOrder}>
                     <img src={orderIcon} className="icon" alt="Order Icon" />
                     Order
+                </button>
+                <button className="toDelivery" onClick={handleToDelivery}>
+                    <img src={deliveryIcon} className="icon" alt="Delivery Icon" />
+                    Delivery
+                </button>
+                <button className="toPayment" onClick={handleToPayment}>
+                    <img src={paymentIcon} className="icon" alt="Payment Icon" />
+                    Payment
                 </button>
                 <button className="logout-button" onClick={handleLogout}>
                     <img src={logoutIcon} className="icon" alt="Logout Icon" />
@@ -156,7 +191,7 @@ const Home = () => {
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Customer Tax ID</th>
                                     <th>Name</th>
                                     <th>Phone</th>
                                 </tr>

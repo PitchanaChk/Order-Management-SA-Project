@@ -56,8 +56,18 @@ function Login() {
 
                     localStorage.setItem('username', user);
 
-                    setTimeout(function(){
-                        navigate("/home");
+                    const userRole = response[0].role; 
+
+                    setTimeout(() => {
+                        if (userRole === "Administrator") {
+                            navigate("/createEmployee");
+                        } 
+                        else if (userRole === "Sales Staff") {
+                            navigate("/home");
+                        }
+                        else if (userRole === "Designer") {
+                            navigate("/allProductDesign");
+                        }
                     }, 500);
                 } else {
                     setError(response[0].result);

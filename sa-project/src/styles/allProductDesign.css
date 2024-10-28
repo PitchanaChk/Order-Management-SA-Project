@@ -1,4 +1,4 @@
-.content-cd {
+.content-dn {
     width: 100%; 
     height: 100%;
     position: fixed;
@@ -9,7 +9,7 @@
     padding-top: 20px;
 }
 
-.customerDetails {
+.productDetails-Design {
     color: #0B3255;
     font-size: 35px;
     font-style: normal;
@@ -17,30 +17,6 @@
     line-height: 200%;
 }
 
-.detail {
-    display: flex;
-    width: 880px;
-    margin-top: -25px;
-}
-
-.c1{
-    color: #0B3255;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 650;
-    line-height: 150%;
-    margin-right: 150px;
-    margin-left: 5px;
-}
-
-.c2 {
-    color: #0B3255;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 650;
-    line-height: 150%;
-    margin-right: 20px;
-}
 
 .top-bar-no-search {
     display: flex;
@@ -62,32 +38,23 @@
     margin-left: 20px; 
 }
 
-.productDetails {
-    color: #0B3255;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 200%;
-    margin-top: -3px;
-}
-
-.product-table {
+.productDetail-design-table {
     margin-top: 0px;
     width: 900px;
     flex-shrink: 0;
     overflow-y: auto; 
     padding-bottom: 15px;
-    max-height: 200px;
+    max-height: 550px;
 }
 
-.product-table table {
+.productDetail-design-table table {
     width: 100%;
     border-collapse: collapse; 
     border-spacing: 0;
     background-color: #ffffff;   
 }
 
-.product-table th {
+.productDetail-design-table th {
     position: sticky; 
     top: 0; 
     background-color: #224C73; 
@@ -95,28 +62,32 @@
     color: #ffffff;
 }
 
-.product-table th, .product-table td {
+.productDetail-design-table th, .productDetail-design-table td {
     padding: 10px;
     border: 1.5px solid #ccc;
     text-align: left;
     width: auto; 
 }
 
-.product-table th:nth-child(1), 
-.product-table td:nth-child(1) {
-    width: 60px; 
+.productDetail-design-table th:nth-child(1), 
+.productDetail-design-table td:nth-child(1) {
+    width: 100px; 
 }
 
-.product-table th:nth-child(2), 
-.product-table td:nth-child(2) {
-    width: 200px; 
+.productDetail-design-table th:nth-child(2), 
+.productDetail-design-table td:nth-child(2) {
+    width: 100px; 
 }
 
-.product-table th:nth-child(3), 
-.product-table td:nth-child(3) {
-    width: 80px; 
+.productDetail-design-table th:nth-child(3), 
+.productDetail-design-table td:nth-child(3) {
+    width: 100px; 
 } 
 
+.productDetail-design-table th:nth-child(4), 
+.productDetail-design-table td:nth-child(4) {
+    width: 340px; 
+} 
 
 .modal-PD {
     display: flex;
@@ -217,4 +188,51 @@ form button {
     border: 1px solid rgb(0, 0, 0);
     border-radius: 10px;
     padding: 0.5rem;
+}
+
+.toDesign {
+    border-radius: 5px;
+    margin-top: 130px;
+    color: #ffffff;
+    background-color: #224C73;
+    width: 250px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start; 
+    padding-left: 60px; 
+}
+.toDesign:hover {
+    background-color: #0056b3;
+}
+
+.toLogOut-design {
+    border-radius: 5px;
+    margin-top: 450px;
+    color: #ffffff;
+    background-color: #007bff00;
+    width: 250px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start; 
+    padding-left: 60px; 
+}
+.toLogOut-design:hover {
+    background-color: #224C73;
+}
+
+.statusDesignDropdown{
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: #ffffff;
+    color: #224C73;
+    width: 185px;
 }
