@@ -16,7 +16,18 @@
 
     $productDetailId = $_GET['productDetailId'];
 
-    $query = "SELECT purchaseOrderId, quotationId, orderStatus FROM PurchaseOrder";
+    $query = "SELECT purchaseOrderId, quotationId, orderStatus 
+              FROM PurchaseOrder 
+              ORDER BY FIELD(orderStatus, 
+                  'Purchase Order Received', 
+                  'In Production', 
+                  'Production Completed', 
+                  'Edit Product', 
+                  'In Delivery Process', 
+                  'Delivered', 
+                  'Pending Payment', 
+                  'Payment Completed', 
+                  'Completed')";
 
 
     $result = mysqli_query($conn, $query);

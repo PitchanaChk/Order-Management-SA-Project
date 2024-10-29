@@ -19,11 +19,17 @@
                 d.purchaseOrderId, 
                 d.deliveryDate, 
                 p.orderStatus 
-            FROM Delivery d 
-            INNER JOIN PurchaseOrder p 
-            ON d.purchaseOrderId = p.purchaseOrderId
-            WHERE p.orderStatus IN ('Production Completed', 'In Delivery Process')
-         ";
+            FROM 
+                Delivery d 
+            INNER JOIN 
+                PurchaseOrder p 
+            ON 
+                d.purchaseOrderId = p.purchaseOrderId
+            WHERE 
+                p.orderStatus IN ('Production Completed', 'In Delivery Process')
+            ORDER BY 
+                FIELD(p.orderStatus, 'Production Completed', 'In Delivery Process');
+            ";
     $result = $conn->query($sql);
 
     $delivery = [];

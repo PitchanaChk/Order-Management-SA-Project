@@ -16,12 +16,13 @@ if ($conn->connect_error) {
 
 $productDetailId = $_GET['productDetailId'];
 
-// Query to select payments with orderStatus = Delivered
 $query = "SELECT 
             p.paymentId, 
             p.purchaseOrderId, 
             p.amountPaid, 
-            po.orderStatus 
+            p.paymentDateTime,
+            p.paymentSlip,
+            po.orderStatus
           FROM Payment p 
           INNER JOIN PurchaseOrder po 
           ON p.purchaseOrderId = po.purchaseOrderId
@@ -34,18 +35,15 @@ while ($row = mysqli_fetch_assoc($result)) {
     $payments[] = $row;
 }
 
-// If we found payments with Delivered status, update to Pending Payment
 if (!empty($payments)) {
     foreach ($payments as $payment) {
         $purchaseOrderId = $payment['purchaseOrderId'];
 
-        // Update orderStatus to Pending Payment
         $updateQuery = "UPDATE PurchaseOrder SET orderStatus = 'Pending Payment' WHERE purchaseOrderId = ?";
         $stmt_update = $conn->prepare($updateQuery);
         $stmt_update->bind_param("s", $purchaseOrderId);
 
         if ($stmt_update->execute()) {
-            // You can log the success message if needed
         } else {
             echo json_encode(['error' => 'Error updating order status: ' . $stmt_update->error]);
         }
@@ -54,16 +52,19 @@ if (!empty($payments)) {
     }
 }
 
-// Now query to get payments with orderStatus = Pending Payment
 $queryPendingPayments = "SELECT 
                             p.paymentId, 
                             p.purchaseOrderId, 
                             p.amountPaid, 
+                            p.paymentDateTime,
+                            p.paymentSlip,
                             po.orderStatus 
                          FROM Payment p 
                          INNER JOIN PurchaseOrder po 
                          ON p.purchaseOrderId = po.purchaseOrderId
-                         WHERE po.orderStatus = 'Pending Payment'";
+                         WHERE po.orderStatus IN ('Pending Payment', 'Payment Completed')
+                         ORDER BY FIELD(po.orderStatus, 'Pending Payment', 'Payment Completed')";
+
 
 $resultPending = mysqli_query($conn, $queryPendingPayments);
 
@@ -72,7 +73,6 @@ while ($row = mysqli_fetch_assoc($resultPending)) {
     $pendingPayments[] = $row;
 }
 
-// Return only the pending payments
 echo json_encode($pendingPayments);
 
 $conn->close();

@@ -56,45 +56,7 @@
 
             $stmt_delivery->close();
         }
-        /*elseif ($orderStatus === "Delivered") {
-            $pendingStatus = "Pending Payment";
-            $stmt_update = $conn->prepare("UPDATE PurchaseOrder SET orderStatus = ? WHERE purchaseOrderId = ?");
-            $stmt_update->bind_param("ss", $pendingStatus, $purchaseOrderId);
 
-            if ($stmt_update->execute()) {
-                echo json_encode(['success' => 'Order status updated to Pending Payment']);
-
-
-                $countQuery = "SELECT COUNT(*) AS count FROM Payment";
-                $result = $conn->query($countQuery);
-
-                if ($result) {
-                    $row = $result->fetch_assoc();
-                    $currentCount = (int)$row['count'];
-                    $paymentId = 'PAY' . str_pad($currentCount + 1, 3, '00', STR_PAD_LEFT); 
-                } else {
-                    die(json_encode(['error' => 'Failed to count product details: ' . $conn->error]));
-                }
-
-                $amountPaid = NULL; 
-                $paymentDate = NULL;
-
-                $stmt_payment = $conn->prepare("INSERT INTO Payment (paymentId, purchaseOrderId, amountPaid, paymentDate) VALUES (?, ?, ?, ?)");
-                $stmt_payment->bind_param("ssss", $paymentId, $purchaseOrderId, $amountPaid, $paymentDate);
-
-                if ($stmt_payment->execute()) {
-                    echo json_encode(['success' => 'Payment created successfully']);
-                } else {
-                    echo json_encode(['error' => 'Error creating payment: ' . $stmt_payment->error]);
-                }
-
-                $stmt_payment->close();
-            } else {
-                echo json_encode(['error' => 'Error updating order status to Pending Payment: ' . $stmt_update->error]);
-            }
-
-            $stmt_update->close();
-        }*/
         elseif ($orderStatus === "Delivered") {
             $countQuery = "SELECT COUNT(*) AS count FROM Payment";
             $result = $conn->query($countQuery);
@@ -110,7 +72,7 @@
             $amountPaid = NULL; 
             $paymentDate = NULL;
 
-            $stmt_payment = $conn->prepare("INSERT INTO Payment (paymentId, purchaseOrderId, amountPaid, paymentDate) VALUES (?, ?, ?, ?)");
+            $stmt_payment = $conn->prepare("INSERT INTO Payment (paymentId, purchaseOrderId, amountPaid, paymentDateTime) VALUES (?, ?, ?, ?)");
             $stmt_payment->bind_param("ssss", $paymentId, $purchaseOrderId, $amountPaid, $paymentDate);
 
             if ($stmt_payment->execute()) {
@@ -119,10 +81,7 @@
                 echo json_encode(['error' => 'Error creating payment: ' . $stmt_payment->error]);
             }
             
-        } else {
-            echo json_encode(['error' => 'Error updating order status to Pending Payment: ' . $stmt_update->error]);
-            $stmt_update->close();
-        }
+        } 
     } else {
         echo json_encode(['error' => 'Error updating status: ' . $stmt->error]);
     }
