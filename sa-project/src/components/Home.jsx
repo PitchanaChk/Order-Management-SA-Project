@@ -148,7 +148,7 @@ const Home = () => {
     
     return (
         <div className="home-container">
-            <div className="top-bar">
+            <div className="top-bar-h">
                 <div className="search-bar">
                     <input
                         type="text"
@@ -163,11 +163,11 @@ const Home = () => {
                 </div>
             </div>
             <div className="sidebar">
-                <button className="toHome-1" onClick={handleToHome}>
+                <button className="toHome" onClick={handleToHome}>
                     <img src={homeIcon} className="icon" alt="Home Icon" />
                     Home
                 </button>
-                <button className="toOrder-1" onClick={handleToOrder}>
+                <button className="toOrder" onClick={handleToOrder}>
                     <img src={orderIcon} className="icon" alt="Order Icon" />
                     Order
                 </button>
@@ -213,7 +213,7 @@ const Home = () => {
                             </tbody>
                         </table>
                     </div>
-                    <button className="create-button" onClick={handleShowModal}>Create New Customer</button>
+                    <button className="create-button-home" onClick={handleShowModal}>Create New Customer</button>
                 </div>
             </div>
             {showModal && (

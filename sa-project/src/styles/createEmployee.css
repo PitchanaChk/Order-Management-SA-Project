@@ -1,11 +1,11 @@
 .home-container {
     display: flex;
-    background-color: #ECE8E7;
+    background-color: #ffffff;
   }
   
 .top-bar {
     display: flex;
-    background-color: #f4f4f4;
+    background-color: #f6f6f6;
     padding: 25px 20px;
     border-bottom: 0.5px solid #ddd;
     position: fixed;
@@ -106,7 +106,7 @@
 .employees-table th {
     position: sticky; 
     top: 0; 
-    background-color: #224C73; 
+    background-color: #808da7; 
     z-index: 1; 
     color: #ffffff;
 }
@@ -144,8 +144,8 @@
 
 .create-button {
     padding: 10px 20px;
-    background-color: #224C73;
-    color: white;
+    background: #7aa2f3;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -174,15 +174,13 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.logout-button-admin:hover {
-    background-color: #224C73;
-}
 
 .toHome {
     border-radius: 5px;
     margin-top: 130px;
     color: #ffffff;
-    background-color: #224C73;
+    background-color: #ffffff43;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -191,9 +189,6 @@
     align-items: center; 
     justify-content: flex-start; 
     padding-left: 60px; 
-}
-.toHome:hover {
-    background-color: #0056b3;
 }
 
 .toOrder {
@@ -210,9 +205,7 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toOrder:hover {
-    background-color: #224C73;
-}
+
 
 .toDelivery {
     border-radius: 5px;
@@ -228,9 +221,7 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toDelivery:hover {
-    background-color: #224C73;
-}
+
 
 .toPayment {
     border-radius: 5px;
@@ -245,9 +236,6 @@
     align-items: center; 
     justify-content: flex-start; 
     padding-left: 60px; 
-}
-.toPayment:hover {
-    background-color: #224C73;
 }
 
 .modal-create-employee {
@@ -319,8 +307,8 @@ form button {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    background-color: #224C73;
-    color: #ffffff;
+    background: #7aa2f3;
+    color: rgb(255, 255, 255);
     width: 200px;
 }
 .profile-info {

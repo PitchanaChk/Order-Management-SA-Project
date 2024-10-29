@@ -230,7 +230,7 @@ const QuotationDetail = () => {
                         <input type="file" ref={fileInputRef} onChange={handleFileChange} />
                         <button onClick={handleUpload}>Upload</button>
                         {validationError && <p className="error">{validationError}</p>}
-                        {imageLink && (
+                        {imageLink ? (
                             <p>
                                 <a 
                                     href={imageLink} 
@@ -241,7 +241,8 @@ const QuotationDetail = () => {
                                     View Uploaded
                                 </a>
                             </p>
-                        )}
+                        ) : null}
+
                     </div>
                     <h3 className='items'>Items</h3>
                     <div className='item-table'>

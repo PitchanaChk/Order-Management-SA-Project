@@ -14,6 +14,11 @@ const Payment = () => {
     const [searchName, setSearchName] = useState('');
     const [profileName, setProfileName] = useState('');
     const [statuses, setStatuses] = useState({});
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPayment, setSelectedPayment] = useState(null);
+    const [amount, setAmount] = useState('');
+    const [transferImage, setTransferImage] = useState(null);
+    const [transferDate, setTransferDate] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,7 +46,6 @@ const Payment = () => {
         }
     };
     
-
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
@@ -63,54 +67,69 @@ const Payment = () => {
         payment.paymentId.includes(searchId) || payment.purchaseOrderId.toLowerCase().includes(searchName.toLowerCase())
     );
 
-    const handleStatusChange = async (e, paymentId) => {
-        const newStatus = e.target.value;
-        const purchaseOrderId = payments.find(item => item.paymentId === paymentId).purchaseOrderId;
-    
-        setStatuses(prevStatuses => ({
-            ...prevStatuses,
-            [paymentId]: newStatus,
-        }));
+    const handleAddProof = (payment) => {
+        setSelectedPayment(payment);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setAmount('');
+        setTransferImage(null);
+        setTransferDate('');
+    };
+
+    const handleSubmitProof = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('amount', amount);
+        formData.append('transferImage', transferImage);
+        formData.append('transferDate', transferDate);
+        formData.append('paymentId', selectedPayment.paymentId); 
+        formData.append('purchaseOrderId', selectedPayment.purchaseOrderId);
 
         try {
-            const response = await fetch(`http://localhost/saProject_api/updatePaymentStatus.php`, {
+            const response = await fetch('http://localhost/saProject_api/addPaymentProof.php', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    purchaseOrderId: purchaseOrderId,
-                    paymentStatus: newStatus, 
-                }),
+                body: formData,
             });
 
             if (!response.ok) {
-                throw new Error('Failed to update status');
+                throw new Error('Failed to submit proof');
             }
-            console.log('Status updated successfully');
-            alert('Status updated successfully!');
+            console.log('Proof submitted successfully');
+            alert('Proof submitted successfully!');
+            handleCloseModal();
+            fetchPayments(); 
         } catch (error) {
-            console.error('Error updating status:', error);
-            alert('Failed to update status. Please try again.');
+            console.error('Error submitting proof:', error);
+            alert('Failed to submit proof. Please try again.');
         }
     };
 
-    const handleToHome = () => {
-        navigate('/home');
+    const handleShowPdf = async (paymentId) => {
+        try {
+            const response = await fetch(`http://localhost/saProject_api/getReceiptPdf.php?paymentId=${paymentId}`, {
+                method: 'GET',
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error fetching PDF');
+            }
+    
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            window.open(url); 
+        } catch (error) {
+            console.error('Error showing PDF:', error);
+        }
     };
 
-    const handleToOrder = () => {
-        navigate('/order');
-    };
-
-    const handleToDelivery = () => {
-        navigate('/delivery');
-    };
-
-    const handleToPayment = () => {
-        navigate('/payment');
-    };
-
+    const handleToHome = () => navigate('/home');
+    const handleToOrder = () => navigate('/order');
+    const handleToDelivery = () => navigate('/delivery');
+    const handleToPayment = () => navigate('/payment');
+    
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('username');
@@ -135,7 +154,7 @@ const Payment = () => {
                 </div>
             </div>
             <div className="sidebar">
-                <button className="toHome" onClick={handleToHome}>
+                <button className="toHome-p" onClick={handleToHome}>
                     <img src={homeIcon} className="icon" alt="Home Icon" />
                     Home
                 </button>
@@ -165,7 +184,11 @@ const Payment = () => {
                                 <tr>
                                     <th>Payment ID</th>
                                     <th>Purchase ID</th>
+                                    <th>Amount Paid</th>
+                                    <th>Date/Time</th>
+                                    <th>Slip</th>
                                     <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,12 +197,33 @@ const Payment = () => {
                                         <tr key={payment.paymentId}>
                                             <td>{payment.paymentId}</td>
                                             <td>{payment.purchaseOrderId}</td>
-                                            <td>{statuses[payment.paymentId]}</td>
+                                            <td>{payment.amountPaid ? payment.amountPaid : 'No Proof'}</td>
+                                            <td>{payment.paymentDateTime ? payment.paymentDateTime : 'No Proof'}</td>
+                                            <td>
+                                                {payment.paymentSlip ? (
+                                                    <a href={`http://localhost/saProject_api/${payment.paymentSlip}`} target="_blank" rel="noopener noreferrer">
+                                                        View Slip
+                                                    </a>
+                                                ) : (
+                                                    'No Slip Available'
+                                                )}
+                                            </td>
+                                            <td className={statuses[payment.paymentId] === 'Pending Payment' ? 'status-pending' : 'status-completed'}>
+                                                {statuses[payment.paymentId]}
+                                                {statuses[payment.paymentId] === 'Payment Completed' && (
+                                                    <button className='show-receipt-button' onClick={() => handleShowPdf(payment.paymentId)}>
+                                                        Show Receipt
+                                                    </button>
+                                                )}
+                                            </td>
+                                            <td>
+                                                <button className='add-proof-button' onClick={() => handleAddProof(payment)}>Add Proof</button>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="6">No payments found</td>
+                                        <td colSpan="7">No payments found</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -187,6 +231,44 @@ const Payment = () => {
                     </div>
                 </div>
             </div>
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={handleCloseModal}>&times;</span>
+                        <h2>Add Payment Proof</h2>
+                        <form onSubmit={handleSubmitProof}>
+                            <div>
+                                <label>Amount:</label>
+                                <input
+                                    type="number"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label>Transfer Image:</label>
+                                <input
+                                    type="file"
+                                    onChange={(e) => setTransferImage(e.target.files[0])}
+                                    accept="image/*"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label>Transfer Date:</label>
+                                <input
+                                    type="datetime-local"
+                                    value={transferDate}
+                                    onChange={(e) => setTransferDate(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

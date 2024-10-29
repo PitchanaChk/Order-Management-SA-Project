@@ -12,7 +12,7 @@
     flex-shrink: 0;
     overflow-y: auto; 
     padding-bottom: 15px;
-    max-height: 600px;
+    max-height: 500px;
 }
 
 .order-table table {
@@ -25,7 +25,7 @@
 .order-table th {
     position: sticky; 
     top: 0; 
-    background-color: #224C73; 
+    background-color: #808da7; 
     z-index: 1; 
     color: #ffffff;
 }
@@ -51,14 +51,13 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toHome-od:hover {
-    background-color: #224C73;
-}
+
 .toOrder-od {
     border-radius: 5px;
     margin-top: 30px;
     color: #ffffff;
-    background-color: #224C73;
+    background-color: #ffffff43;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -68,7 +67,32 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toOrder-od:hover {
-    background-color: #0056b3;
+
+.statusOrderDropdown{
+    margin-left: 10px;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 15px;
+    background-color: #ffffff;
+    color: #224C73;
+    width: 200px;
 }
 
+.update-order-button {
+    background-color: #8aa7c1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.update-order-button:hover {
+    background-color: #0056b3;
+}

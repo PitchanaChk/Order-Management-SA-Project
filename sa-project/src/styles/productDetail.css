@@ -2,7 +2,7 @@
     width: 100%; 
     height: 100%;
     position: fixed;
-    background-color: #ECE8E7;
+    background-color: #ffffff;
     top: 85px;
     left: 290px;
     padding-left: 100px;
@@ -14,7 +14,7 @@
 }
 .top-bar-no-search {
     display: flex;
-    background-color: #f4f4f4;
+    background-color: #f6f6f6;
     height: 40px;
     padding: 25px 20px;
     border-bottom: 0.5px solid #ddd;
@@ -146,7 +146,7 @@
 .quotation-table th {
     position: sticky; 
     top: 0; 
-    background-color: #224C73; 
+    background-color: #808da7; 
     z-index: 1; 
     color: #ffffff;
 }
@@ -175,8 +175,8 @@
 
 .create-quotation-button {
     padding: 10px 20px;
-    background-color: #224C73;
-    color: white;
+    background: #7aa2f3;
+    color: rgb(255, 255, 255);
     border: none;
     border-radius: 10px;
     cursor: pointer;
@@ -188,7 +188,7 @@
 }
 
 .create-quotation-button:hover {
-    background-color: #0056b3;
+    background-color: #455B9E;
 }
 
 .modal-Q {
@@ -290,8 +290,8 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 10px;
-    background-color: #224C73;
-    color: #ffffff;
+    background: #7aa2f3;
+    color: rgb(255, 255, 255);
     width: 200px;
     font-weight: 600;
     height: 40px;

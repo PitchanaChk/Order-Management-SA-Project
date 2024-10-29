@@ -5,7 +5,6 @@ import CustomerDetail from "./components/CustomerDetail";
 import ProductDetail from "./components/ProductDetail";
 import QuotationDetail from "./components/QuotationDetail";
 import Order from "./components/Order";
-import OrderDetail from "./components/OrderDetail";
 import CreateEmployeeAdmin from "./components/CreateEmployeeAdmin";
 import Delivery from "./components/Delivery";
 import AllProductDesign from "./components/AllProductDesign";
@@ -22,7 +21,6 @@ function App() {
         <Route path="/productDetail/:productDetailId" element={<ProductDetail/>} />
         <Route path="/quotation/:quotationId" element={<QuotationDetail/>} />
         <Route path="/order" element={<Order/>} />
-        <Route path="/orderDetail/:purchaseOrderId" element={<OrderDetail/>} />
         <Route path="/createEmployee" element={<CreateEmployeeAdmin/>} />
         <Route path="/delivery" element={<Delivery/>} />
         <Route path="/allProductDesign" element={<AllProductDesign/>} />

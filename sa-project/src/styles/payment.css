@@ -2,7 +2,7 @@
     width: 100%; 
     height: 100%;
     position: fixed;
-    background-color: #ECE8E7;
+    background-color: #ffffff;
     top: 85px;
     left: 290px;
     padding-top: 50px;
@@ -23,7 +23,7 @@
     flex-shrink: 0;
     overflow-y: auto; 
     padding-bottom: 15px;
-    max-height: 480px;
+    max-height: 500px;
 }
 
 .payment-table table {
@@ -36,7 +36,7 @@
 .payment-table th {
     position: sticky; 
     top: 0; 
-    background-color: #224C73; 
+    background-color: #808da7; 
     z-index: 1; 
     color: #ffffff;
 }
@@ -50,12 +50,12 @@
 
 .payment-table th:nth-child(1), 
 .payment-table td:nth-child(1) {
-    width: 50px; 
+    width: 90px; 
 }
 
 .payment-table th:nth-child(2), 
 .payment-table td:nth-child(2) {
-    width: 50px; 
+    width: 100px; 
 }
 
 .payment-table th:nth-child(3), 
@@ -64,14 +64,21 @@
 } 
 .payment-table th:nth-child(4), 
 .payment-table td:nth-child(4) {
-    width: 200px; 
+    width: 100px; 
 } 
 
 .payment-table th:nth-child(5), 
 .payment-table td:nth-child(5) {
-    width: 250px; 
+    width: 130px; 
 } 
-
+.payment-table th:nth-child(6), 
+.payment-table td:nth-child(6) {
+    width: 150px; 
+}
+.payment-table th:nth-child(7), 
+.payment-table td:nth-child(7) {
+    width: 50px; 
+}
 .statusDeliveryDropdown{
     margin-left: 10px;
     padding: 10px;
@@ -104,7 +111,7 @@
     background-color: #0056b3;
 }
 
-.download-delivery-button {
+.add-proof-button {
     padding: 10px 20px;
     background-color: #8aa7c1;
     color: white;
@@ -117,7 +124,7 @@
     height: 40px;
 }
 
-.download-delivery-button:hover {
+.add-proof-button:hover {
     background-color: #0056b3;
 }
 
@@ -135,11 +142,9 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.logout-button:hover {
-    background-color: #224C73;
-}
 
-.toHome-delivery {
+
+.toHome-p {
     border-radius: 5px;
     margin-top: 130px;
     color: #ffffff;
@@ -152,9 +157,6 @@
     align-items: center; 
     justify-content: flex-start; 
     padding-left: 60px; 
-}
-.toHome:hover {
-    background-color: #0056b3;
 }
 
 .toOrder {
@@ -171,15 +173,13 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toOrder:hover {
-    background-color: #224C73;
-}
 
-.toDelivery-delivery {
+
+.toDelivery {
     border-radius: 5px;
     margin-top: 30px;
     color: #ffffff;
-    background-color: #224C73;
+    background-color: #007bff00;
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -189,9 +189,7 @@
     justify-content: flex-start; 
     padding-left: 60px; 
 }
-.toDelivery:hover {
-    background-color: #224C73;
-}
+
 
 .toPayment-p {
     border-radius: 5px;
@@ -279,8 +277,8 @@ form button {
     font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
-    background-color: #224C73;
-    color: #ffffff;
+    background: #7aa2f3;
+    color: rgb(255, 255, 255);
     width: 200px;
 }
 .profile-info {
@@ -310,4 +308,49 @@ form button {
     border: 1px solid rgb(0, 0, 0);
     border-radius: 10px;
     padding: 0.5rem;
+}
+
+.status-pending {
+    color: red;
+}
+
+.status-completed {
+    color: green;
+}
+
+
+.add-proof-button {
+    padding: 10px 10px;
+    background-color: #8aa7c1;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 40px;
+}
+
+.add-proof-button:hover {
+    background-color: #0056b3;
+}
+
+
+.show-receipt-button {
+    padding: 10px 10px;
+    background-color: #8aa7c100;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 130px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 40px;
+    margin-top: 5px;
+}
+
+.show-receipt-button:hover {
+    background-color: #bababa;
 }

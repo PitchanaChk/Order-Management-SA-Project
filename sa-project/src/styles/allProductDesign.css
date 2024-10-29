@@ -20,7 +20,7 @@
 
 .top-bar-no-search {
     display: flex;
-    background-color: #f4f4f4;
+    background-color: #f6f6f6;
     height: 40px;
     padding: 25px 20px;
     border-bottom: 0.5px solid #ddd;
@@ -44,7 +44,7 @@
     flex-shrink: 0;
     overflow-y: auto; 
     padding-bottom: 15px;
-    max-height: 550px;
+    max-height: 500px;
 }
 
 .productDetail-design-table table {
@@ -57,7 +57,7 @@
 .productDetail-design-table th {
     position: sticky; 
     top: 0; 
-    background-color: #224C73; 
+    background-color: #808da7; 
     z-index: 1; 
     color: #ffffff;
 }
@@ -71,7 +71,7 @@
 
 .productDetail-design-table th:nth-child(1), 
 .productDetail-design-table td:nth-child(1) {
-    width: 100px; 
+    width: 200px; 
 }
 
 .productDetail-design-table th:nth-child(2), 
@@ -156,24 +156,10 @@ form button {
     padding: 10px;
     font-size: 16px;
     cursor: pointer;
-    border-radius: 5px;
-    background-color: #224C73;
+    background: #7aa2f3;
+    color: rgb(255, 255, 255);
     color: #ffffff;
     width: 200px;
-}
-
-.create-button-Product {
-    padding: 10px 20px;
-    background-color: #224C73;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin-top: 20px;
-    width: 300px;
-    font-weight: 600;
-    font-size: 18px;
-    height: 50px;
 }
 
 .create-button:hover {
@@ -194,7 +180,8 @@ form button {
     border-radius: 5px;
     margin-top: 130px;
     color: #ffffff;
-    background-color: #224C73;
+    background-color: #ffffff43;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.05);
     width: 250px;
     font-weight: 700;
     font-size: 18px;
@@ -203,9 +190,6 @@ form button {
     align-items: center; 
     justify-content: flex-start; 
     padding-left: 60px; 
-}
-.toDesign:hover {
-    background-color: #0056b3;
 }
 
 .toLogOut-design {
@@ -221,9 +205,6 @@ form button {
     align-items: center; 
     justify-content: flex-start; 
     padding-left: 60px; 
-}
-.toLogOut-design:hover {
-    background-color: #224C73;
 }
 
 .statusDesignDropdown{
