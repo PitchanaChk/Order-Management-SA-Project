@@ -18,7 +18,7 @@
         $quotationId = $_GET['quotationId'];
 
         // Query to fetch quotation details
-        $quotationQuery = "SELECT quotationId, quotationDate, statusQuotation FROM Quotation WHERE quotationId = ?";
+        $quotationQuery = "SELECT quotationId, quotationDate FROM Quotation WHERE quotationId = ?";
         $itemsQuery = "SELECT orderItemId, itemName, pricePerUnit, quantity FROM OrderItem WHERE quotationId = ?";
 
         if ($stmt = $conn->prepare($quotationQuery)) {

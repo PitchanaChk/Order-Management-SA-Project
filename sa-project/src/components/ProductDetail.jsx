@@ -170,7 +170,7 @@ const ProductDetail = () => {
             const existingQuotationsCount = quotations.length;
             const quotationId = `Q${modifiedproductDetailId}0${existingQuotationsCount + 1}`;
     
-            const modifiedQuotationId = quotationId.slice(3);
+            const modifiedQuotationId = quotationId.slice(1);
             const updatedQuotationItems = quotationItems.map((item, index) => ({
                 ...item,
                 orderItemId: `OI${modifiedQuotationId}0${index + 1}`, 
@@ -266,7 +266,9 @@ const ProductDetail = () => {
                         <p>Design Product Photo : </p>
                         <p className='link'> 
                             {product.productPhoto ? (
-                                <a href={product.productPhoto} target="_blank" rel="noopener noreferrer">{product.productPhoto}</a>
+                                <a href={`http://localhost/saProject_api/${product.productPhoto}`} target="_blank" rel="noopener noreferrer">
+                                    View Product Deisgn
+                                </a>
                             ) : (
                                 'No photo available'
                             )}
@@ -280,7 +282,6 @@ const ProductDetail = () => {
                             <tr>
                                 <th>Quotation ID</th>
                                 <th>Date</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -289,7 +290,6 @@ const ProductDetail = () => {
                                 <tr key={quotation.quotationId} onClick={() => navigate(`/quotation/${quotation.quotationId}`)}>
                                     <td>{quotation.quotationId}</td>
                                     <td>{quotation.quotationDate}</td>
-                                    <td>{quotation.statusQuotation}</td>
                                 </tr>
                             ))
                             ) : (

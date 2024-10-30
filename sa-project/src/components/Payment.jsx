@@ -235,11 +235,12 @@ const Payment = () => {
                 <div className="modal">
                     <div className="modal-content">
                         <span className="close" onClick={handleCloseModal}>&times;</span>
-                        <h2>Add Payment Proof</h2>
+                        <h2 className='addPaymentLabel'>Add Payment Proof</h2>
                         <form onSubmit={handleSubmitProof}>
                             <div>
-                                <label>Amount:</label>
+                                <label className='headLabel'>Amount:</label>
                                 <input
+                                    className='headInput'
                                     type="number"
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}
@@ -247,8 +248,9 @@ const Payment = () => {
                                 />
                             </div>
                             <div>
-                                <label>Transfer Image:</label>
+                                <label className='headLabel'>Transfer Image:</label>
                                 <input
+                                    className='headInput'
                                     type="file"
                                     onChange={(e) => setTransferImage(e.target.files[0])}
                                     accept="image/*"
@@ -256,8 +258,9 @@ const Payment = () => {
                                 />
                             </div>
                             <div>
-                                <label>Transfer Date:</label>
+                                <label className='headLabel'>Transfer Date:</label>
                                 <input
+                                    className='headInput'
                                     type="datetime-local"
                                     value={transferDate}
                                     onChange={(e) => setTransferDate(e.target.value)}

@@ -16,7 +16,7 @@
 
     $productDetailId = $_GET['productDetailId'];
 
-    $query = "SELECT purchaseOrderId, quotationId, orderStatus 
+    $query = "SELECT purchaseOrderId, quotationId, orderStatus, purchaseOrderPDF
               FROM PurchaseOrder 
               ORDER BY FIELD(orderStatus, 
                   'Purchase Order Received', 

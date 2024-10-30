@@ -44,7 +44,7 @@
     flex-shrink: 0;
     overflow-y: auto; 
     padding-bottom: 15px;
-    max-height: 600px;
+    max-height: 500px;
 }
 
 .productDetail-design-table table {

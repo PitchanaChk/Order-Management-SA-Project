@@ -226,7 +226,7 @@
     padding: 20px;
     border-radius: 10px;
     width: 500px;
-    height: 600px;
+    height: 430px;
     position: relative;
 }
 
@@ -353,4 +353,35 @@ form button {
 
 .show-receipt-button:hover {
     background-color: #bababa;
+}
+
+.addPaymentLabel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+form input {
+    margin-bottom: 15px; 
+    padding: 10px;
+    font-size: 16px;
+}
+
+.headInput {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    width: 300px;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 10px;
+    padding: 0.5rem;
+}
+
+.headLabel {
+    color: #0B3255;
 }

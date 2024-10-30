@@ -29,7 +29,6 @@
     $productDetailId = $conn->real_escape_string($data['productDetailId']);
     $quotationId = $conn->real_escape_string($data['quotationId']);
     $quotationDate = $conn->real_escape_string($data['quotationDate']);  
-    $statusQuotation = $conn->real_escape_string($data['statusQuotation']);  
     $quotationItems = $data['quotationItems'];
 
     $conn->begin_transaction();
@@ -43,12 +42,12 @@
         $countData = $resultCount->fetch_assoc();
         $existingCount = $countData['count'];
 
-        $quotationQuery = "INSERT INTO Quotation (quotationId, productDetailId, quotationDate, statusQuotation) VALUES (?, ?, ?, ?)";
+        $quotationQuery = "INSERT INTO Quotation (quotationId, productDetailId, quotationDate) VALUES (?, ?, ?)";
         $stmt = $conn->prepare($quotationQuery);
         if (!$stmt) {
             throw new Exception("Prepare failed: " . $conn->error);
         }
-        $stmt->bind_param("ssss", $quotationId, $productDetailId, $quotationDate, $statusQuotation); 
+        $stmt->bind_param("sss", $quotationId, $productDetailId, $quotationDate); 
         if (!$stmt->execute()) {
             throw new Exception("Execute failed: " . $stmt->error);
         }

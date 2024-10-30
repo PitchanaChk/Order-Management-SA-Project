@@ -12,7 +12,7 @@ const Order = () => {
     const [purchaseOrders, setPurchaseOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const [newStatus, setNewStatus] = useState({}); // Change to object for individual order statuses
+    const [newStatus, setNewStatus] = useState({}); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -158,6 +158,7 @@ const Order = () => {
                             <tr>
                                 <th>Order ID</th>
                                 <th>Quotation ID</th>
+                                <th>PO PDF</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -168,6 +169,15 @@ const Order = () => {
                                     <tr key={order.purchaseOrderId}>
                                         <td>{order.purchaseOrderId}</td>
                                         <td>{order.quotationId}</td>
+                                        <td>
+                                                {order.purchaseOrderPDF ? (
+                                                    <a href={`http://localhost/saProject_api/${order.purchaseOrderPDF}`} target="_blank" rel="noopener noreferrer">
+                                                        View PO
+                                                    </a>
+                                                ) : (
+                                                    'No PO Available'
+                                                )}
+                                            </td>
                                         <td>{order.orderStatus}</td>
                                         <td>
                                             <select 
@@ -185,7 +195,7 @@ const Order = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="4">No matching orders found.</td>
+                                    <td colSpan="5">No matching orders found.</td>
                                 </tr>
                             )}
                         </tbody>

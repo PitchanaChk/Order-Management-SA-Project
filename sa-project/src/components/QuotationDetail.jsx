@@ -108,6 +108,7 @@ const QuotationDetail = () => {
         }
     };
 
+
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -223,7 +224,6 @@ const QuotationDetail = () => {
                     <div className='c-1'>
                         <p className='c1-1'>Quotation ID: <span>{quotation.quotationId}</span></p>
                         <p className='c1-1'>Quotation Date: <span>{quotation.quotationDate}</span></p>
-                        <p className='c2-q'>Status: <span>{quotation.statusQuotation}</span></p>
                     </div>
                     <div className="c2-2">
                         <h3>Upload Purchase Order</h3>
