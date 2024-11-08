@@ -71,17 +71,17 @@
 
 .productDetail-design-table th:nth-child(1), 
 .productDetail-design-table td:nth-child(1) {
-    width: 200px; 
+    width: 100px; 
 }
 
 .productDetail-design-table th:nth-child(2), 
 .productDetail-design-table td:nth-child(2) {
-    width: 100px; 
+    width: 190px; 
 }
 
 .productDetail-design-table th:nth-child(3), 
 .productDetail-design-table td:nth-child(3) {
-    width: 100px; 
+    width: 160px; 
 } 
 
 .productDetail-design-table th:nth-child(4), 

@@ -50,26 +50,26 @@
 
 .delivery-table th:nth-child(1), 
 .delivery-table td:nth-child(1) {
-    width: 50px; 
+    width: 80px; 
 }
 
 .delivery-table th:nth-child(2), 
 .delivery-table td:nth-child(2) {
-    width: 50px; 
+    width: 100px; 
 }
 
 .delivery-table th:nth-child(3), 
 .delivery-table td:nth-child(3) {
-    width: 80px; 
+    width: 100px; 
 } 
 .delivery-table th:nth-child(4), 
 .delivery-table td:nth-child(4) {
-    width: 200px; 
+    width: 300px; 
 } 
 
 .delivery-table th:nth-child(5), 
 .delivery-table td:nth-child(5) {
-    width: 250px; 
+    width:130px; 
 } 
 
 .statusDeliveryDropdown{
@@ -97,10 +97,29 @@
     font-weight: 500;
     font-size: 16px;
     height: 40px;
-    margin-right: 10px;
 }
 
 .show-delivery-button:hover {
+    background-color: #0056b3;
+}
+
+.delivered-button {
+    padding: 10px 10px;
+    background-color: #8aa7c1;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100px;
+    font-weight: 500;
+    font-size: 16px;
+    height: 40px;
+    margin-top: -30px;
+    margin-bottom: -10px;
+
+}
+
+.delivered-button:hover {
     background-color: #0056b3;
 }
 

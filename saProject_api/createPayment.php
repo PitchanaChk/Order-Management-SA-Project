@@ -10,8 +10,16 @@ $dbname = "projectSA";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
+if ($conn->connect_error) {
+    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
+}
 
-$countQuery = "SELECT COUNT(*) AS count FROM Payment";
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $amount = $_POST['amount'];
+    $paymentDateTime = $_POST['transferDate']; 
+    $purchaseOrderId = $_POST['purchaseOrderId'];
+
+    $countQuery = "SELECT COUNT(*) AS count FROM Payment";
     $result = $conn->query($countQuery);
 
     if ($result) {
@@ -22,21 +30,7 @@ $countQuery = "SELECT COUNT(*) AS count FROM Payment";
         die(json_encode(['error' => 'Failed to count product details: ' . $conn->error]));
     }
 
-
-
-
-if ($conn->connect_error) {
-    die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $amount = $_POST['amount'];
-    $paymentDateTime = $_POST['transferDate']; 
-    $paymentId = $_POST['paymentId']; 
-    $purchaseOrderId = $_POST['purchaseOrderId'];
-
     if (isset($_FILES['transferImage'])) {
-
         $file = $_FILES['transferImage']; 
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
         $uniqueFileName = $paymentId . '_' . time() . '.' . $extension;
@@ -48,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         if (move_uploaded_file($file['tmp_name'], $uploadFile)) {
-            $stmt = $conn->prepare("UPDATE Payment SET amountPaid = ?, paymentDateTime = ?, paymentSlip = ? WHERE paymentId = ?");
-            $stmt->bind_param("ssss", $amount, $paymentDateTime, $uploadFile, $paymentId);
+            $stmt = $conn->prepare("INSERT INTO Payment (paymentId, purchaseOrderId, amountPaid, paymentDateTime, paymentSlip) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssss", $paymentId, $purchaseOrderId, $amount, $paymentDateTime, $uploadFile);
 
             if ($stmt->execute()) {
                 $updateStatusStmt = $conn->prepare("UPDATE PurchaseOrder SET orderStatus = ? WHERE purchaseOrderId = ?");
@@ -57,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $updateStatusStmt->bind_param("ss", $newStatus, $purchaseOrderId); 
                 $updateStatusStmt->execute();
 
-                
                 $updateStatusStmt->close();
 
                 echo json_encode(['success' => 'Payment proof added successfully and order status updated']);

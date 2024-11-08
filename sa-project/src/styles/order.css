@@ -37,6 +37,31 @@
     width: auto; 
 }
 
+.order-table th:nth-child(1), 
+.order-table td:nth-child(1) {
+    width: 80px; 
+}
+
+.order-table th:nth-child(2), 
+.order-table td:nth-child(2) {
+    width: 100px; 
+}
+
+.order-table th:nth-child(3), 
+.order-table td:nth-child(3) {
+    width: 120px; 
+} 
+
+.order-table th:nth-child(4), 
+.order-table td:nth-child(4) {
+    width: 300px; 
+}
+
+.order-table th:nth-child(5), 
+.order-table td:nth-child(5) {
+    width: 150px; 
+}
+
 .toHome-od {
     border-radius: 5px;
     margin-top: 130px;
@@ -80,19 +105,25 @@
     width: 200px;
 }
 
-.update-order-button {
-    background-color: #8aa7c1;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 100px;
-    font-weight: 500;
+.edit-product-button{
+    margin-top: 0px;
+    padding: 10px;
     font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #46f681;
+    color: rgb(255, 255, 255);
+    width: 150px;
+    font-weight: 600;
     height: 40px;
-    margin-left: 10px;
 }
 
-.update-order-button:hover {
-    background-color: #0056b3;
+.edit-product-button:hover {
+    background-color: #20bc54;
+}
+
+.edit-product-button:disabled {
+    background-color: #b6b6b6;
+    opacity: 0.3;
+    cursor: not-allowed;
 }

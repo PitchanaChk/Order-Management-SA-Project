@@ -14,7 +14,11 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $sql = "SELECT productDetailId, title, status, productPhoto FROM ProductDetails WHERE status IN ('Waiting for Design', 'Designing', 'Editing')";
+    $sql = "SELECT productDetailId, title, status, productPhoto 
+            FROM ProductDetails 
+            WHERE status IN ('Waiting for Design', 'Editing')
+            ORDER BY FIELD(status, 'Waiting for Design', 'Editing')";
+
     $result = $conn->query($sql);
 
     $productDetailsAll = [];

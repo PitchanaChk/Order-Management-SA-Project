@@ -299,3 +299,54 @@
 .submit-Q:hover {
     background-color: #0056b3;
 }
+
+.confirm-design-button{
+    margin-top: 0px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #46f681;
+    color: rgb(255, 255, 255);
+    width: 150px;
+    font-weight: 600;
+    height: 40px;
+}
+
+.confirm-design-button:hover {
+    background-color: #20bc54;
+}
+
+.confirm-design-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.edit-design-button{
+    margin-top: 0px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+    background: #f76189;
+    color: rgb(255, 255, 255);
+    width: 150px;
+    font-weight: 600;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.edit-design-button:hover {
+    background-color: #c8325a;
+}
+
+.edit-design-button:disabled {
+    opacity: 0;
+    cursor: not-allowed;
+}
+
+.edit-design-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+

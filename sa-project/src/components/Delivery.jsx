@@ -112,7 +112,7 @@ const Delivery = () => {
         }
     };
 
-    const handleStatusChange = async (e, deliveryId) => {
+    /*const handleStatusChange = async (e, deliveryId) => {
         const newStatus = e.target.value;
         const purchaseOrderId = delivery.find(item => item.deliveryId === deliveryId).purchaseOrderId;
     
@@ -141,6 +141,34 @@ const Delivery = () => {
         } catch (error) {
             console.error('Error updating status:', error);
             alert('Failed to update status. Please try again.');
+        }
+    };*/
+
+    const handleDelivered = async (purchaseOrderId) => {
+        try {
+            const response = await fetch('http://localhost/saProject_api/updateOrderStatus.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    purchaseOrderId: purchaseOrderId,
+                    orderStatus: 'Delivered',
+                }),
+            });
+    
+            if (response.ok) {
+                alert('Production marked as completed!');
+                setStatuses(prevStatuses => ({
+                    ...prevStatuses,
+                    [purchaseOrderId]: 'Delivered'
+                }));
+                fetchPurchaseOrders(); 
+            } else {
+                throw new Error('Failed to update production status');
+            }
+        } catch (error) {
+            console.error('Error updating production status:', error);
         }
     };
     
@@ -227,22 +255,20 @@ const Delivery = () => {
                                             <td>{delivery.purchaseOrderId}</td>
                                             <td>{delivery.deliveryDate}</td>
                                             <td>
-                                                <select 
-                                                    className="statusDeliveryDropdown" 
-                                                    value={statuses[delivery.deliveryId] || ''} 
-                                                    onChange={(e) => handleStatusChange(e, delivery.deliveryId)}
-                                                >
-                                                    <option value="Production Completed">Production Completed</option>
-                                                    <option value="In Delivery Process">In Delivery Process</option>
-                                                    <option value="Delivered">Delivered</option>
-                                                </select>
+                                                {delivery.orderStatus}
+                                                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                                    <button 
+                                                        className="delivered-button" 
+                                                        onClick={() => handleDelivered(delivery.purchaseOrderId)}
+                                                    >
+                                                        Delivered
+                                                    </button>
+                                                </div>
                                             </td>
-                                            <td>
+
+                                            <td style={{ textAlign: 'center' }}>
                                                 <button className="show-delivery-button" onClick={() => handleShowPdf(delivery.deliveryId)}>
                                                     Show PDF
-                                                </button>
-                                                <button className="download-delivery-button" onClick={() => handleDownloadPdf(delivery.deliveryId)}>
-                                                    Download PDF
                                                 </button>
                                             </td>
                                         </tr>

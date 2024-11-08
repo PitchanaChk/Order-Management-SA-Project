@@ -75,7 +75,7 @@ const ProductDetail = () => {
         }
     };
 
-    const handleStatusChange = async (e) => {
+    /*const handleStatusChange = async (e) => {
         const newStatus = e.target.value;
         setStatus(newStatus);
 
@@ -100,7 +100,7 @@ const ProductDetail = () => {
             console.error('Error updating status:', error);
             alert('Failed to update status. Please try again.');
         }
-    };
+    };*/
 
     const handleToHome = () => {
         navigate('/home');
@@ -125,8 +125,13 @@ const ProductDetail = () => {
     };
 
     const handleShowModal = () => {
-        setShowModal(true);
+        if (status === 'Confirm Design') {
+            setShowModal(true);
+        } else {
+            alert('You can only create a quotation when the design is confirmed.');
+        }
     };
+    
     
     const handleCloseModal = () => {
         setShowModal(false);
@@ -154,6 +159,59 @@ const ProductDetail = () => {
         const newItems = quotationItems.filter((_, i) => i !== index);
         setQuotationItems(newItems);
     };
+
+    const handleConfirmDesign = async () => {
+        try {
+            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productDetailId: productDetailId,
+                    status: 'Confirm Design',
+                }),
+            });
+    
+            if (response.ok) {
+                alert('Design confirmed successfully!');
+                setStatus('Confirm Design');
+                fetchProductDetail();  
+            } else {
+                throw new Error('Failed to confirm design');
+            }
+        } catch (error) {
+            console.error('Error confirming design:', error);
+            alert('Failed to confirm design. Please try again.');
+        }
+    };
+    
+    const handleEditDesign = async () => {
+        try {
+            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    productDetailId: productDetailId,
+                    status: 'Editing',
+                }),
+            });
+    
+            if (response.ok) {
+                alert('Design status set to Editing');
+                setStatus('Editing');
+                fetchProductDetail();  
+            } else {
+                throw new Error('Failed to set status to Editing');
+            }
+        } catch (error) {
+            console.error('Error setting design to editing:', error);
+            alert('Failed to set status to editing. Please try again.');
+        }
+    };
+    
     
     const handleSubmitQuotation = async () => {
         const quotationDate = new Date().toISOString().split('T')[0]; 
@@ -252,17 +310,22 @@ const ProductDetail = () => {
                         <p className='c1-2'>{product.description}</p>
                     </div>
                     <div className='c2'>
-                        <p>Status : 
-                            <select className='statusPdDropdown' value={status} onChange={handleStatusChange}>
-                                <option value="Waiting for Design">Waiting for Design</option>
-                                <option value="Designing">Designing</option>
-                                <option value="Designing Completed">Designing Completed</option>
-                                <option value="Confirm Deisgn">Confirm Deisgn</option>
-                                <option value="Editing">Editing</option>
-                                <option value="Cancelled">Cancelled</option>
-
-                            </select>
-                        </p>
+                        <p>Status : {product.status}</p>
+                        <div className="button-container-status">
+                            <button 
+                                className='confirm-design-button' 
+                                onClick={handleConfirmDesign}
+                                disabled={status === 'Confirm Design'}
+                            > Confirm Design
+                            </button>
+                            <button 
+                                className='edit-design-button' 
+                                onClick={handleEditDesign} 
+                                disabled={status === 'Confirm Design'}
+                            >
+                                Edit Design
+                            </button>
+                        </div>
                         <p>Design Product Photo : </p>
                         <p className='link'> 
                             {product.productPhoto ? (

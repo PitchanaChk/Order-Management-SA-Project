@@ -84,7 +84,7 @@ try {
         throw new Exception('Failed to move uploaded file');
     }
 
-    $stmt = $conn->prepare("UPDATE ProductDetails SET productPhoto = ? WHERE productDetailId = ?");
+    $stmt = $conn->prepare("UPDATE ProductDetails SET productPhoto = ?, status = 'Designing Completed' WHERE productDetailId = ?");
     if (!$stmt) {
         throw new Exception('Database prepare failed: ' . $conn->error);
     }

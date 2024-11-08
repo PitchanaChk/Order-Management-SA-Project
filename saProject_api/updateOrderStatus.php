@@ -58,30 +58,18 @@
         }
 
         elseif ($orderStatus === "Delivered") {
-            $countQuery = "SELECT COUNT(*) AS count FROM Payment";
-            $result = $conn->query($countQuery);
-
-            if ($result) {
-                $row = $result->fetch_assoc();
-                $currentCount = (int)$row['count'];
-                $paymentId = 'PAY' . str_pad($currentCount + 1, 3, '00', STR_PAD_LEFT); 
+            $updateStatusQuery = "UPDATE purchaseOrder SET orderStatus = 'Pending Payment' WHERE purchaseOrderId = ?";
+            $stmt_update = $conn->prepare($updateStatusQuery);
+            $stmt_update->bind_param("s", $purchaseOrderId);
+        
+            if ($stmt_update->execute()) {
+                $response['success'] .= ', Order status updated to Pending Payment successfully';
             } else {
-                die(json_encode(['error' => 'Failed to count product details: ' . $conn->error]));
+                $response['error'] = 'Failed to update order status: ' . $stmt_update->error;
             }
-
-            $amountPaid = NULL; 
-            $paymentDate = NULL;
-
-            $stmt_payment = $conn->prepare("INSERT INTO Payment (paymentId, purchaseOrderId, amountPaid, paymentDateTime) VALUES (?, ?, ?, ?)");
-            $stmt_payment->bind_param("ssss", $paymentId, $purchaseOrderId, $amountPaid, $paymentDate);
-
-            if ($stmt_payment->execute()) {
-                echo json_encode(['success' => 'Payment created successfully']);
-            } else {
-                echo json_encode(['error' => 'Error creating payment: ' . $stmt_payment->error]);
-            }
-            
-        } 
+        }
+        
+        
     } else {
         echo json_encode(['error' => 'Error updating status: ' . $stmt->error]);
     }

@@ -69,43 +69,32 @@ const Order = () => {
         navigate('/', { replace: true });
     };
 
-    const handleUpdateStatus = async (purchaseOrderId) => {
-        const statusToUpdate = newStatus[purchaseOrderId];
-
-        if (!statusToUpdate) {
-            alert('Please select a status to update.');
-            return;
-        }
-        
+    const handleEditProduct = async (purchaseOrderId) => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/updateOrderStatus.php`, {
+            const response = await fetch('http://localhost/saProject_api/updateOrderStatus.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     purchaseOrderId: purchaseOrderId,
-                    orderStatus: statusToUpdate,
+                    orderStatus: 'Edit Product',
                 }),
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to update status');
+    
+            if (response.ok) {
+                alert('Production marked as completed!');
+                setStatuses(prevStatuses => ({
+                    ...prevStatuses,
+                    [purchaseOrderId]: 'Edit Product'
+                }));
+                fetchPurchaseOrders(); 
+            } else {
+                throw new Error('Failed to update production status');
             }
-
-            alert('Status updated successfully!');
-            fetchPurchaseOrders(); // Refresh the purchase orders
         } catch (error) {
-            console.error('Error updating status:', error);
-            alert('Failed to update status. Please try again.');
+            console.error('Error updating production status:', error);
         }
-    };
-
-    const handleStatusChange = (purchaseOrderId, status) => {
-        setNewStatus((prevStatus) => ({
-            ...prevStatus,
-            [purchaseOrderId]: status,
-        }));
     };
 
     if (loading) {
@@ -180,16 +169,13 @@ const Order = () => {
                                             </td>
                                         <td>{order.orderStatus}</td>
                                         <td>
-                                            <select 
-                                                className='statusOrderDropdown'
-                                                value={newStatus[order.purchaseOrderId] || ''} 
-                                                onChange={(e) => handleStatusChange(order.purchaseOrderId, e.target.value)}
+                                            <button 
+                                                className='edit-product-button' 
+                                                onClick={() => handleEditProduct(order.purchaseOrderId)}
+                                                disabled={['Purchase Order Received', 'Production Completed','Payment Completed', 'Editing', 'Edit Product','Completed'].includes(order.orderStatus)}
                                             >
-                                                <option value="" disabled>Select Status</option>
-                                                <option value="Edit Product">Edit Product</option>
-                                                <option value="Completed">Completed</option>
-                                            </select>
-                                            <button className = 'update-order-button' onClick={() => handleUpdateStatus(order.purchaseOrderId)}>Update</button>
+                                                Edit Product
+                                            </button>
                                         </td>
                                     </tr>
                                 ))

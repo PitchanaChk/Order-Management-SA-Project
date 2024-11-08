@@ -44,7 +44,7 @@ const AllProductDesign = () => {
         }
     };
 
-    const handleStatusChange = async (productDetailId, newStatus) => {
+    /*const handleStatusChange = async (productDetailId, newStatus) => {
         try {
             const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
                 method: 'POST',
@@ -65,7 +65,7 @@ const AllProductDesign = () => {
             console.error('Error updating status:', error);
             alert('Failed to update status. Please try again.');
         }
-    };
+    };*/
 
     const handleFileChange = (productId, event) => {
         const file = event.target.files[0];
@@ -221,18 +221,7 @@ const AllProductDesign = () => {
                                     <tr key={product.productDetailId}>
                                         <td>{product.productDetailId}</td>
                                         <td>{product.title}</td>
-                                        <td>
-                                            <select
-                                                className='statusDesignDropdown'
-                                                value={product.status}
-                                                onChange={(e) => handleStatusChange(product.productDetailId, e.target.value)}
-                                            >
-                                                <option value="Waiting for Design">Waiting for Design</option>
-                                                <option value="Designing">Designing</option>
-                                                <option value="Designing Completed">Designing Completed</option>
-                                                <option value="Editing">Editing</option>
-                                            </select>
-                                        </td>
+                                        <td>{product.status}</td>
                                         <td>
                                             <input
                                                 type="file"

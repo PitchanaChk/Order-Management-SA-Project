@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/home.css'; 
 import '../styles/payment.css'; 
 import homeIcon from '../image/home.png';
 import orderIcon from '../image/order.png';
@@ -9,47 +8,31 @@ import deliveryIcon from '../image/delivery.png';
 import paymentIcon from '../image/payment.png';
 
 const Payment = () => {
-    const [payments, setPayments] = useState([]);
-    const [searchId, setSearchId] = useState('');
-    const [searchName, setSearchName] = useState('');
     const [profileName, setProfileName] = useState('');
-    const [statuses, setStatuses] = useState({});
+    const [purchaseOrders, setPurchaseOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState('');
     const [showModal, setShowModal] = useState(false);
-    const [selectedPayment, setSelectedPayment] = useState(null);
+    const [showProofModal, setShowProofModal] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [paymentDetails, setPaymentDetails] = useState(null);
     const [amount, setAmount] = useState('');
     const [transferImage, setTransferImage] = useState(null);
     const [transferDate, setTransferDate] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchPayments();
         fetchProfile();
-        const storedUsername = localStorage.getItem('username');
-        if (storedUsername) {
-            setProfileName(storedUsername);
-        }
+        fetchPOPayment();
     }, []);
 
-    const fetchPayments = async () => {
-        try {
-            const response = await fetch('http://localhost/saProject_api/getTablePayment.php');
-            const data = await response.json();
-            
-            setPayments(data);
-            const initialStatuses = {};
-            data.forEach(item => {
-                initialStatuses[item.paymentId] = item.orderStatus; 
-            });
-            setStatuses(initialStatuses);
-        } catch (error) {
-            console.error('Error fetching payments:', error);
-        }
-    };
-    
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
             const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`);
+    
+            if (!response.ok) throw new Error('Network response was not ok');
+    
             const data = await response.json();
             setProfileName(data[0].result.name); 
         } catch (error) {
@@ -57,18 +40,30 @@ const Payment = () => {
         }
     };
 
-    const handleSearch = (e) => {
-        const value = e.target.value;
-        setSearchId(value);
-        setSearchName(value);
+    const fetchPOPayment = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`http://localhost/saProject_api/getTablePOPayment.php`);
+            const data = await response.json();
+            setPurchaseOrders(data);
+        } catch (error) {
+            console.error('Error fetching purchase orders:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const filteredPayments = payments.filter(payment =>
-        payment.paymentId.includes(searchId) || payment.purchaseOrderId.toLowerCase().includes(searchName.toLowerCase())
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);  
+    };
+
+    const filteredOrders = purchaseOrders.filter(order => 
+        order.purchaseOrderId.includes(searchTerm) || 
+        order.quotationId.includes(searchTerm)
     );
 
-    const handleAddProof = (payment) => {
-        setSelectedPayment(payment);
+    const handleAddProof = (order) => {
+        setSelectedOrder(order);
         setShowModal(true);
     };
 
@@ -85,26 +80,43 @@ const Payment = () => {
         formData.append('amount', amount);
         formData.append('transferImage', transferImage);
         formData.append('transferDate', transferDate);
-        formData.append('paymentId', selectedPayment.paymentId); 
-        formData.append('purchaseOrderId', selectedPayment.purchaseOrderId);
-
+        formData.append('purchaseOrderId', selectedOrder.purchaseOrderId);
+    
         try {
-            const response = await fetch('http://localhost/saProject_api/addPaymentProof.php', {
+            const response = await fetch('http://localhost/saProject_api/createPayment.php', {
                 method: 'POST',
                 body: formData,
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to submit proof');
-            }
-            console.log('Proof submitted successfully');
+    
+            if (!response.ok) throw new Error('Failed to submit proof');
+    
             alert('Proof submitted successfully!');
             handleCloseModal();
-            fetchPayments(); 
+            fetchPOPayment(); 
         } catch (error) {
             console.error('Error submitting proof:', error);
             alert('Failed to submit proof. Please try again.');
         }
+    };
+
+    const handleShowProof = async (e) => {
+        setSelectedOrder(e);
+        try {
+            const response = await fetch(`http://localhost/saProject_api/getPaymentDetails.php?purchaseOrderId=${e.purchaseOrderId}`);
+            if (!response.ok) throw new Error('Failed to fetch payment details');
+            
+            const data = await response.json();
+            setPaymentDetails(data);
+            setShowProofModal(true);
+        } catch (error) {
+            console.error('Error fetching payment details:', error);
+            alert('Failed to fetch payment details. Please try again.');
+        }
+    };
+
+    const handleCloseProofModal = () => {
+        setShowProofModal(false);
+        setPaymentDetails(null);
     };
 
     const handleShowPdf = async (paymentId) => {
@@ -124,12 +136,8 @@ const Payment = () => {
             console.error('Error showing PDF:', error);
         }
     };
-
-    const handleToHome = () => navigate('/home');
-    const handleToOrder = () => navigate('/order');
-    const handleToDelivery = () => navigate('/delivery');
-    const handleToPayment = () => navigate('/payment');
     
+
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('username');
@@ -137,14 +145,19 @@ const Payment = () => {
         navigate('/', { replace: true });
     };
 
+    const handleToHome = () => navigate('/home');
+    const handleToOrder = () => navigate('/order');
+    const handleToDelivery = () => navigate('/delivery');
+    const handleToPayment = () => navigate('/payment');
+
     return (
         <div className="home-container">
             <div className="top-bar">
                 <div className="search-bar">
                     <input
                         type="text"
-                        placeholder="Search Payment ID or Purchase Order ID"
-                        value={searchId}
+                        placeholder="Search by Order ID or Quotation ID"
+                        value={searchTerm}
                         onChange={handleSearch}
                     />
                     <button className="search-button">🔍</button>
@@ -175,65 +188,71 @@ const Payment = () => {
                     Log Out
                 </button>
             </div>
-            <div className="content">
-                <div className="home-page">
-                    <label className="labelPayment">Payments</label>
-                    <div className="payment-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Payment ID</th>
-                                    <th>Purchase ID</th>
-                                    <th>Amount Paid</th>
-                                    <th>Date/Time</th>
-                                    <th>Slip</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredPayments.length > 0 ? (
-                                    filteredPayments.map((payment) => (
-                                        <tr key={payment.paymentId}>
-                                            <td>{payment.paymentId}</td>
-                                            <td>{payment.purchaseOrderId}</td>
-                                            <td>{payment.amountPaid ? payment.amountPaid : 'No Proof'}</td>
-                                            <td>{payment.paymentDateTime ? payment.paymentDateTime : 'No Proof'}</td>
-                                            <td>
-                                                {payment.paymentSlip ? (
-                                                    <a href={`http://localhost/saProject_api/${payment.paymentSlip}`} target="_blank" rel="noopener noreferrer">
-                                                        View Slip
-                                                    </a>
-                                                ) : (
-                                                    'No Slip Available'
-                                                )}
-                                            </td>
-                                            <td className={statuses[payment.paymentId] === 'Pending Payment' ? 'status-pending' : 'status-completed'}>
-                                                {statuses[payment.paymentId]}
-                                                {statuses[payment.paymentId] === 'Payment Completed' && (
-                                                    <button className='show-receipt-button' onClick={() => handleShowPdf(payment.paymentId)}>
-                                                        Show Receipt
-                                                    </button>
-                                                )}
-                                            </td>
-                                            <td>
-                                                <button className='add-proof-button' onClick={() => handleAddProof(payment)}>Add Proof</button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan="7">No payments found</td>
+            <div className="content-pd">
+                <h2 className='order-title'>Payments</h2>
+                <div className="payment-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Quotation ID</th>
+                                <th>PO PDF</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredOrders.length > 0 ? (
+                                filteredOrders.map(order => (
+                                    <tr key={order.purchaseOrderId}>
+                                        <td>{order.purchaseOrderId}</td>
+                                        <td>{order.quotationId}</td>
+                                        <td>
+                                            {order.purchaseOrderPDF ? (
+                                                <a href={`http://localhost/saProject_api/${order.purchaseOrderPDF}`} target="_blank" rel="noopener noreferrer">
+                                                    View PO
+                                                </a>
+                                            ) : (
+                                                'No PO Available'
+                                            )}
+                                        </td>
+                                        <td className={order.orderStatus === 'Pending Payment' ? 'status-pending' : order.orderStatus === 'Payment Completed' ? 'status-completed' : ''}>
+                                            {order.orderStatus}
+                                        </td>
+                                        <td>
+                                            {order.orderStatus === 'Pending Payment' && (
+                                                <button 
+                                                    className='add-proof-button' 
+                                                    onClick={() => handleAddProof(order)}
+                                                    disabled={order.orderStatus === 'Payment Completed'} 
+                                                >
+                                                    Add Proof
+                                                </button>
+                                            )}
+                                            {order.orderStatus === 'Payment Completed' && (
+                                                <button 
+                                                    className='show-proof-button' 
+                                                    onClick={() => handleShowProof(order)}
+                                                >
+                                                    Show Proof
+                                                </button>
+                                            )}
+                                        </td>
                                     </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="5">No matching orders found.</td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
             {showModal && (
                 <div className="modal">
-                    <div className="modal-content">
+                    <div className="modal-content-p">
                         <span className="close" onClick={handleCloseModal}>&times;</span>
                         <h2 className='addPaymentLabel'>Add Payment Proof</h2>
                         <form onSubmit={handleSubmitProof}>
@@ -272,6 +291,50 @@ const Payment = () => {
                     </div>
                 </div>
             )}
+
+            {showProofModal && paymentDetails && (
+                <div className="model-payment-detail">
+                    <div className="modal-content-payment-detail">
+                        <span className="close-payment-detail" onClick={handleCloseProofModal}>&times;</span>
+                        <h2 className="proofLabel">Payment Proof Details</h2>
+                        <div className="modal-body-payment-detail">
+                            <div className="modal-column-left">
+                                <div className="modal-item-payment-detail">
+                                    <label className="modal-label-payment-detail">Payment ID:</label>
+                                    <span className="modal-info-payment-detail">{paymentDetails.paymentId}</span>
+                                </div>
+                                <div className="modal-item-payment-detail">
+                                    <label className="modal-label-payment-detail">Order ID:</label>
+                                    <span className="modal-info-payment-detail">{paymentDetails.purchaseOrderId}</span>
+                                </div>
+                                <div className="modal-item-payment-detail">
+                                    <label className="modal-label-payment-detail">Amount Paid:</label>
+                                    <span className="modal-info-payment-detail">{paymentDetails.amountPaid}</span>
+                                </div>
+                            </div>
+                            <div className="modal-column-right">
+                                <div className="modal-item-payment-detail">
+                                    <label className="modal-label-payment-detail">Payment Date & Time:</label>
+                                    <span className="modal-info-payment-detail">{paymentDetails.paymentDateTime}</span>
+                                </div>
+                                <div className="modal-item-payment-detail">
+                                    <label className="modal-label-payment-detail">Payment Slip:</label>
+                                    <a className="modal-link-payment-detail" href={`http://localhost/saProject_api/${paymentDetails.paymentSlip}`} target="_blank" rel="noopener noreferrer">
+                                        View Slip
+                                    </a>
+                                </div>
+                                <div className="modal-item-payment-detail">
+                                    <label className="modal-label-payment-detail">Receipt:</label>
+                                    <button className="show-receipt" onClick={() => handleShowPdf(paymentDetails.paymentId)}>
+                                    Show Receipt
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

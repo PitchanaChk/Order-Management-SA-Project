@@ -20,14 +20,12 @@
               FROM PurchaseOrder 
               ORDER BY FIELD(orderStatus, 
                   'Purchase Order Received', 
-                  'In Production', 
+                  'Editing', 
                   'Production Completed', 
                   'Edit Product', 
-                  'In Delivery Process', 
                   'Delivered', 
                   'Pending Payment', 
-                  'Payment Completed', 
-                  'Completed')";
+                  'Payment Completed')";
 
 
     $result = mysqli_query($conn, $query);

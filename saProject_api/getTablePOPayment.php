@@ -16,18 +16,11 @@
 
     $productDetailId = $_GET['productDetailId'];
 
-    $query = "SELECT 
-                    purchaseOrderId, 
-                    quotationId, 
-                    orderStatus 
-                FROM 
-                    PurchaseOrder 
-                WHERE 
-                    orderStatus IN ('Purchase Order Received', 'Editing', 'Edit Product') 
-                ORDER BY 
-                    FIELD(orderStatus, 'Purchase Order Received', 'Edit Product', 'Editing')
-            ";
-
+    $query = "SELECT purchaseOrderId, quotationId, orderStatus, purchaseOrderPDF
+                FROM PurchaseOrder
+                WHERE orderStatus IN ('Pending Payment', 'Payment Completed')
+                ORDER BY FIELD(orderStatus, 'Pending Payment', 'Payment Completed');
+                ";
 
 
     $result = mysqli_query($conn, $query);
