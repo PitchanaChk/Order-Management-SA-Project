@@ -34,7 +34,7 @@ const Home = () => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/getTableCustomers.php');
+            const response = await fetch('http://localhost/backend/getTableCustomers.php');
             const data = await response.json();
             setCustomers(data);
         } catch (error) {
@@ -45,7 +45,7 @@ const Home = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`, {
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const Home = () => {
             return; 
         }
         try {
-            const response = await fetch('http://localhost/saProject_api/createCustomer.php', {
+            const response = await fetch('http://localhost/backend/createCustomer.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

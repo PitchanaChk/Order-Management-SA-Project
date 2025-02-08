@@ -34,7 +34,7 @@ const ProductDetail = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`, {
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const ProductDetail = () => {
 
     const fetchProductDetail = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getProductDetail.php?id=${productDetailId}`);
+            const response = await fetch(`http://localhost/backend/getProductDetail.php?id=${productDetailId}`);
             const data = await response.json();
             setProduct(data);
             setStatus(data.status); 
@@ -67,7 +67,7 @@ const ProductDetail = () => {
 
     const fetchQuotations = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getTableQuotations.php?productDetailId=${productDetailId}`);
+            const response = await fetch(`http://localhost/backend/getTableQuotations.php?productDetailId=${productDetailId}`);
             const data = await response.json();
             setQuotations(data);
         } catch (error) {
@@ -80,7 +80,7 @@ const ProductDetail = () => {
         setStatus(newStatus);
 
         try {
-            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
+            const response = await fetch('http://localhost/backend/updateProductStatus.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ const ProductDetail = () => {
 
     const handleConfirmDesign = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
+            const response = await fetch('http://localhost/backend/updateProductStatus.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ const ProductDetail = () => {
     
     const handleEditDesign = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
+            const response = await fetch('http://localhost/backend/updateProductStatus.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -234,7 +234,7 @@ const ProductDetail = () => {
                 orderItemId: `OI${modifiedQuotationId}0${index + 1}`, 
             }));
     
-            const response = await fetch('http://localhost/saProject_api/createQuotation.php', {
+            const response = await fetch('http://localhost/backend/createQuotation.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -329,7 +329,7 @@ const ProductDetail = () => {
                         <p>Design Product Photo : </p>
                         <p className='link'> 
                             {product.productPhoto ? (
-                                <a href={`http://localhost/saProject_api/${product.productPhoto}`} target="_blank" rel="noopener noreferrer">
+                                <a href={`http://localhost/backend/${product.productPhoto}`} target="_blank" rel="noopener noreferrer">
                                     View Product Deisgn
                                 </a>
                             ) : (

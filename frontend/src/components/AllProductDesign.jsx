@@ -21,7 +21,7 @@ const AllProductDesign = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`);
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`);
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             setProfileName(data[0].result.name); 
@@ -32,12 +32,12 @@ const AllProductDesign = () => {
 
     const fetchProductDetails = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getTableAllProductDetails.php`);
+            const response = await fetch(`http://localhost/backend/getTableAllProductDetails.php`);
             if (!response.ok) throw new Error('Network response was not ok');
             const data = await response.json();
             setProductDetails(data.map(product => ({
                 ...product,
-                imageLink: product.productPhoto ? `http://localhost/saProject_api/${product.productPhoto}` : null
+                imageLink: product.productPhoto ? `http://localhost/backend/${product.productPhoto}` : null
             })));
         } catch (error) {
             console.error('Error fetching product details:', error);
@@ -46,7 +46,7 @@ const AllProductDesign = () => {
 
     /*const handleStatusChange = async (productDetailId, newStatus) => {
         try {
-            const response = await fetch('http://localhost/saProject_api/updateProductStatus.php', {
+            const response = await fetch('http://localhost/backend/updateProductStatus.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -124,7 +124,7 @@ const AllProductDesign = () => {
             formData.append('file', selectedFile);
             formData.append('productDetailId', productId);
     
-            const response = await fetch('http://localhost/saProject_api/uploadFileDesign.php', {
+            const response = await fetch('http://localhost/backend/uploadFileDesign.php', {
                 method: 'POST',
                 body: formData
             });
@@ -141,7 +141,7 @@ const AllProductDesign = () => {
             }
     
             if (data.status === 'success' && data.data?.image_link) {
-                const imageLink = `http://localhost/saProject_api/${data.data.image_link}`;
+                const imageLink = `http://localhost/backend/${data.data.image_link}`;
                 setProductDetails(prevDetails =>
                     prevDetails.map(product =>
                         product.productDetailId === productId

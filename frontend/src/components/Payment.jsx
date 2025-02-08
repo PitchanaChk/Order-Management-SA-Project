@@ -29,7 +29,7 @@ const Payment = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`);
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`);
     
             if (!response.ok) throw new Error('Network response was not ok');
     
@@ -43,7 +43,7 @@ const Payment = () => {
     const fetchPOPayment = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost/saProject_api/getTablePOPayment.php`);
+            const response = await fetch(`http://localhost/backend/getTablePOPayment.php`);
             const data = await response.json();
             setPurchaseOrders(data);
         } catch (error) {
@@ -83,7 +83,7 @@ const Payment = () => {
         formData.append('purchaseOrderId', selectedOrder.purchaseOrderId);
     
         try {
-            const response = await fetch('http://localhost/saProject_api/createPayment.php', {
+            const response = await fetch('http://localhost/backend/createPayment.php', {
                 method: 'POST',
                 body: formData,
             });
@@ -102,7 +102,7 @@ const Payment = () => {
     const handleShowProof = async (e) => {
         setSelectedOrder(e);
         try {
-            const response = await fetch(`http://localhost/saProject_api/getPaymentDetails.php?purchaseOrderId=${e.purchaseOrderId}`);
+            const response = await fetch(`http://localhost/backend/getPaymentDetails.php?purchaseOrderId=${e.purchaseOrderId}`);
             if (!response.ok) throw new Error('Failed to fetch payment details');
             
             const data = await response.json();
@@ -121,7 +121,7 @@ const Payment = () => {
 
     const handleShowPdf = async (paymentId) => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getReceiptPdf.php?paymentId=${paymentId}`, {
+            const response = await fetch(`http://localhost/backend/getReceiptPdf.php?paymentId=${paymentId}`, {
                 method: 'GET',
             });
     
@@ -209,7 +209,7 @@ const Payment = () => {
                                         <td>{order.quotationId}</td>
                                         <td>
                                             {order.purchaseOrderPDF ? (
-                                                <a href={`http://localhost/saProject_api/${order.purchaseOrderPDF}`} target="_blank" rel="noopener noreferrer">
+                                                <a href={`http://localhost/backend/${order.purchaseOrderPDF}`} target="_blank" rel="noopener noreferrer">
                                                     View PO
                                                 </a>
                                             ) : (
@@ -319,7 +319,7 @@ const Payment = () => {
                                 </div>
                                 <div className="modal-item-payment-detail">
                                     <label className="modal-label-payment-detail">Payment Slip:</label>
-                                    <a className="modal-link-payment-detail" href={`http://localhost/saProject_api/${paymentDetails.paymentSlip}`} target="_blank" rel="noopener noreferrer">
+                                    <a className="modal-link-payment-detail" href={`http://localhost/backend/${paymentDetails.paymentSlip}`} target="_blank" rel="noopener noreferrer">
                                         View Slip
                                     </a>
                                 </div>

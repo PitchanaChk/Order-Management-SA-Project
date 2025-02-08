@@ -33,7 +33,7 @@ function Login() {
 
     const loginSubmit = () => {
         if (user !== "" && pass !== "") {
-            const url = "http://localhost/saProject_api/login.php";
+            const url = "http://localhost/backend/login.php";
             const headers = {
                 "Accept": "application/json",
                 "Content-Type": "application/json"

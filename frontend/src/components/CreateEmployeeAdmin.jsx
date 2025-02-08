@@ -34,7 +34,7 @@ const CreateEmployeeAdmin = () => {
 
     const fetchEmplyees = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/getTableEmployees.php');
+            const response = await fetch('http://localhost/backend/getTableEmployees.php');
             const data = await response.json();
             setEmployees(data);
         } catch (error) {
@@ -45,7 +45,7 @@ const CreateEmployeeAdmin = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`, {
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -124,7 +124,7 @@ const CreateEmployeeAdmin = () => {
         }
     
         try {
-            const response = await fetch('http://localhost/saProject_api/createEmployees.php', {
+            const response = await fetch('http://localhost/backend/createEmployees.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

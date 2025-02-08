@@ -32,7 +32,7 @@ const Payment = () => {
 
     const fetchPayments = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/getTablePayment.php');
+            const response = await fetch('http://localhost/backend/getTablePayment.php');
             const data = await response.json();
             
             setPayments(data);
@@ -49,7 +49,7 @@ const Payment = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`);
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`);
             const data = await response.json();
             setProfileName(data[0].result.name); 
         } catch (error) {
@@ -89,7 +89,7 @@ const Payment = () => {
         formData.append('purchaseOrderId', selectedPayment.purchaseOrderId);
 
         try {
-            const response = await fetch('http://localhost/saProject_api/addPaymentProof.php', {
+            const response = await fetch('http://localhost/backend/addPaymentProof.php', {
                 method: 'POST',
                 body: formData,
             });
@@ -109,7 +109,7 @@ const Payment = () => {
 
     const handleShowPdf = async (paymentId) => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getReceiptPdf.php?paymentId=${paymentId}`, {
+            const response = await fetch(`http://localhost/backend/getReceiptPdf.php?paymentId=${paymentId}`, {
                 method: 'GET',
             });
     
@@ -201,7 +201,7 @@ const Payment = () => {
                                             <td>{payment.paymentDateTime ? payment.paymentDateTime : 'No Proof'}</td>
                                             <td>
                                                 {payment.paymentSlip ? (
-                                                    <a href={`http://localhost/saProject_api/${payment.paymentSlip}`} target="_blank" rel="noopener noreferrer">
+                                                    <a href={`http://localhost/backend/${payment.paymentSlip}`} target="_blank" rel="noopener noreferrer">
                                                         View Slip
                                                     </a>
                                                 ) : (

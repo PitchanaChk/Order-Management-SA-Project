@@ -26,7 +26,7 @@ const QuotationDetail = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`, {
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ const QuotationDetail = () => {
     const fetchQuotationDetail = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://localhost/saProject_api/getQuotationDetail.php?quotationId=${quotationId}`);
+            const response = await fetch(`http://localhost/backend/getQuotationDetail.php?quotationId=${quotationId}`);
             const data = await response.json();
             setQuotation(data);
         } catch (error) {
@@ -69,7 +69,7 @@ const QuotationDetail = () => {
 
     const handleShowPdf = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getQuotationPdf.php?quotationId=${quotationId}`, {
+            const response = await fetch(`http://localhost/backend/getQuotationPdf.php?quotationId=${quotationId}`, {
                 method: 'GET',
             });
     
@@ -87,7 +87,7 @@ const QuotationDetail = () => {
     
     const handleDownloadPdf = async () => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getQuotationPdf.php?quotationId=${quotationId}`, {
+            const response = await fetch(`http://localhost/backend/getQuotationPdf.php?quotationId=${quotationId}`, {
                 method: 'GET',
             });
     
@@ -139,7 +139,7 @@ const QuotationDetail = () => {
             formData.append('file', selectedFile);
             formData.append('quotationId', quotation.quotationId);  
     
-            const response = await fetch('http://localhost/saProject_api/createPurchaseOrder.php', {
+            const response = await fetch('http://localhost/backend/createPurchaseOrder.php', {
                 method: 'POST',
                 body: formData
             });
@@ -156,7 +156,7 @@ const QuotationDetail = () => {
             }
     
             if (data.status === 'success' && data.data?.pdf_link) {
-                const pdfLink = `http://localhost/saProject_api/${data.data.pdf_link}`;
+                const pdfLink = `http://localhost/backend/${data.data.pdf_link}`;
                 setImageLink(pdfLink);
                 localStorage.setItem(`imageLink_${quotationId}`, pdfLink); // บันทึกลิงก์ลงใน localStorage
                 setSelectedFile(null);

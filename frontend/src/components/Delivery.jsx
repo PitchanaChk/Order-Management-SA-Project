@@ -27,7 +27,7 @@ const Delivery = () => {
 
     const fetchDelivery = async () => {
         try {
-            const response = await fetch('http://localhost/saProject_api/getTableDelivery.php');
+            const response = await fetch('http://localhost/backend/getTableDelivery.php');
             const data = await response.json();
             setDelivery(data);
             const initialStatuses = {};
@@ -43,7 +43,7 @@ const Delivery = () => {
     const fetchProfile = async () => {
         try {
             const username = localStorage.getItem('username'); 
-            const response = await fetch(`http://localhost/saProject_api/getProfileEmployee.php?username=${username}`, {
+            const response = await fetch(`http://localhost/backend/getProfileEmployee.php?username=${username}`, {
                 method: 'GET', 
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Delivery = () => {
 
     const handleShowPdf = async (deliveryId) => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getDeliveryPdf.php?deliveryId=${deliveryId}`, {
+            const response = await fetch(`http://localhost/backend/getDeliveryPdf.php?deliveryId=${deliveryId}`, {
                 method: 'GET',
             });
     
@@ -91,7 +91,7 @@ const Delivery = () => {
 
     const handleDownloadPdf = async (deliveryId) => {
         try {
-            const response = await fetch(`http://localhost/saProject_api/getDeliveryPdf.php?deliveryId=${deliveryId}`, {
+            const response = await fetch(`http://localhost/backend/getDeliveryPdf.php?deliveryId=${deliveryId}`, {
                 method: 'GET',
             });
     
@@ -122,7 +122,7 @@ const Delivery = () => {
         }));
     
         try {
-            const response = await fetch(`http://localhost/saProject_api/updateOrderStatus.php`, {
+            const response = await fetch(`http://localhost/backend/updateOrderStatus.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ const Delivery = () => {
 
     const handleDelivered = async (purchaseOrderId) => {
         try {
-            const response = await fetch('http://localhost/saProject_api/updateOrderStatus.php', {
+            const response = await fetch('http://localhost/backend/updateOrderStatus.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
